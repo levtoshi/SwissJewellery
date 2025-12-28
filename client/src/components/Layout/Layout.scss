@@ -1,0 +1,102 @@
+@use "../../styles/variables" as *;
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: $bg-color;
+  padding: 15px 30px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+  .container {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, $milk-color 0%, $golden-color 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .nav {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.6rem 1rem;
+            font-size: 1rem;
+            line-height: 1.2;
+            border-radius: $border-radius;
+            color: #fff;
+            font-weight: 500;
+            text-decoration: none;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s all;
+
+            &:hover,
+            &:focus {
+              background: $blue-color;
+            }
+
+            &.active {
+              background: $blue-color;
+              font-weight: 600;
+            }
+        }
+    }
+
+    .burger {
+      display: none;
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      z-index: 10000;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .header .container {
+    .nav {
+      position: absolute;
+      top: 140%;
+      left: 0;
+      width: 100%;
+      flex-direction: column;
+      background: $bg-color;
+      overflow: hidden;
+      max-height: 0;
+      gap: 0;
+      padding: 0;
+      transition: max-height 0.3s ease;
+
+      &.open {
+        max-height: 500px;
+        padding: 1rem 0;
+      }
+
+      .nav-btn {
+        width: 100%;
+        padding: 15px;
+      }
+    }
+
+    .burger {
+      display: block;
+    }
+  }
+}
