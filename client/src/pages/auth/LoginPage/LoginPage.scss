@@ -1,0 +1,144 @@
+@use "../../../styles/variables" as *;
+
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  min-height: 100vh;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background: #ffffff;
+  padding: 32px 28px;
+  border-radius: $border-radius;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+
+  .logo-container {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, $blue-color, $golden-color);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .login-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .login-subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 24px;
+  }
+
+  .login-form {
+    width: 100%;
+
+    .field {
+      margin-bottom: 16px;
+
+      label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 6px;
+        font-weight: 500;
+      }
+
+      .input {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: $border-radius;
+        border: 1px solid #d1d5db;
+        font-size: 14px;
+        outline: none;
+        transition: border 0.2s, box-shadow 0.2s;
+
+        &:focus
+        {
+          border-color: $blue-color;
+          box-shadow: 0 0 0 2px rgba(59, 76, 184, 0.2);
+        }
+      }
+
+      .input.error {
+        border-color: $error-color;
+      }
+
+      .error-text {
+        margin-top: 4px;
+        font-size: 12px;
+        color: $error-color;
+      }
+    }
+
+    .login-btn {
+      width: 100%;
+      margin-top: 8px;
+      padding: 12px;
+      border: none;
+      border-radius: $border-radius;
+      background: linear-gradient(135deg, $blue-color 0%, $golden-color 100%);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+
+      &:hover
+      {
+        opacity: 0.9;
+      }
+
+      &:active
+      {
+        transform: scale(0.98);
+      }
+    }
+  }
+
+  .line {
+    margin: 24px 0;
+    height: 1px;
+    width: 100%;
+    background: #e5e7eb;
+  }
+
+  .test-container {
+    width: 100%;
+
+    .test-title {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 12px;
+    }
+
+    .test-data {
+      background: #f3f4f6;
+      border-radius: $border-radius;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+
+      .test-data-title {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .test-data-subtitle {
+        margin: 4px 0 0;
+        font-size: 12px;
+        color: #4b5563;
+      }
+    }
+  }
+}
