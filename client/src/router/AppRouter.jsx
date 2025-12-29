@@ -6,11 +6,13 @@ import ProductPage from '../pages/ProductPage';
 import LoginPage from '../pages/auth/LoginPage/LoginPage';
 import RegisterPage from '../pages/auth/RegisterPage/RegisterPage';
 import CheckoutPage from '../pages/CheckoutPage';
-import ProfilePage from '../pages/ProfilePage';
-import AdminLayout from '../pages/admin/AdminLayout';
+import ProfilePage from '../pages/ProfilePage/ProfilePage';
+import AdminLayout from '../pages/admin/AdminLayout/AdminLayout';
 import CategoriesPage from '../pages/admin/CategoriesPage';
-import ProductsPage from '../pages/admin/ProductsPage';
+import ProductsPage from '../pages/admin/ProductsPage/ProductsPage';
 import OrdersPage from '../pages/admin/OrdersPage';
+import NotFound from '../pages/NotFound/NotFound';
+import ProductForm from '../pages/admin/ProductForm/ProductForm';
 
 function ProtectedRoute({ children, adminOnly = false }) {
   const { isAuthenticated, user, loading } = useAuth();
@@ -52,11 +54,14 @@ function AppRouter() {
             <AdminLayout />
           </ProtectedRoute>
         }>
-          <Route index element={<Navigate to="/admin/categories" replace />} />
-          <Route path="categories" element={<CategoriesPage />} />
+          <Route index element={<Navigate to="/admin/products" replace />} />
           <Route path="products" element={<ProductsPage />} />
+          <Route path="categories" element={<CategoriesPage />} />
           <Route path="orders" element={<OrdersPage />} />
+          <Route path="create" element={<ProductForm />} />
+          <Route path="edit/:id" element={<ProductForm />} />
         </Route>
+        <Route path='*' element={<NotFound/>} />
       </Route>
     </Routes>
   );

@@ -1,0 +1,166 @@
+@use "../../../styles/variables" as *;
+
+.note-form-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+
+  .note-form {
+    width: 100%;
+    max-width: 720px;
+    background: #ffffff;
+    border-radius: $border-radius;
+    padding: 2.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+
+    .form-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: $bg-color;
+      margin-bottom: 0.25rem;
+    }
+
+    .form-subtitle {
+      font-size: 0.95rem;
+      color: $gray-text-color;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1.25rem;
+
+      label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: $bg-color;
+        margin-bottom: 0.35rem;
+      }
+
+      input,
+      textarea,
+      select {
+        padding: 0.65rem 0.75rem;
+        font-size: 0.95rem;
+        border-radius: $border-radius;
+        border: 1px solid #cbd5e1;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+        &:focus {
+          border-color: $blue-color;
+          box-shadow: 0 0 0 2px rgba($blue-color, 0.15);
+        }
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 90px;
+      }
+
+      .error-text {
+        margin-top: 0.3rem;
+        font-size: 0.8rem;
+        color: $error-color;
+      }
+    }
+
+    .flex-container {
+      display: flex;
+      gap: 1rem;
+
+      .form-group {
+        flex: 1;
+      }
+    }
+
+    .image-preview
+    {
+      width: 128px;
+      height: 128px;
+      border-radius: $border-radius;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.75rem;
+
+      .btn-primary {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: $milk-color;
+        background: linear-gradient(135deg, $blue-color, $golden-color);
+        border: none;
+        border-radius: $border-radius;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+        &:hover:not(:disabled) {
+          transform: translateY(-1px);
+          box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+        }
+
+        &:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+      }
+
+      .btn-secondary {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        background: transparent;
+        color: $bg-color;
+        border: 1px solid #cbd5e1;
+        border-radius: $border-radius;
+        cursor: pointer;
+        transition: background 0.15s ease, border-color 0.15s ease;
+
+        &:hover {
+          background: #f1f5f9;
+          border-color: $blue-color;
+        }
+      }
+    }
+
+    .error-message {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: $border-radius;
+      background: rgba($error-color, 0.1);
+      color: $error-color;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.loading-error
+{
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 10px;
+  color: $error-color;
+}
+
+@media (max-width: 640px) {
+  .note-form {
+    padding: 1.75rem;
+
+    .flex-container {
+      flex-direction: column;
+    }
+
+    .form-actions {
+      flex-direction: column;
+    }
+  }
+}

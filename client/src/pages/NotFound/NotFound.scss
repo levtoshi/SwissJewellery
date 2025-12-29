@@ -1,0 +1,15 @@
+@use "../../styles/variables" as *;
+
+.not-found-container
+{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+
+    .title
+    {
+        font-size: 28;
+        color: $error-color;
+        font-weight: 700;
+    }
+}

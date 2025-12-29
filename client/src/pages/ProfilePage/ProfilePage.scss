@@ -1,0 +1,122 @@
+@use "../../styles/variables" as *;
+
+.profile {
+  max-width: 600px;
+  margin: 4rem auto 2rem;
+  background: white;
+  border-radius: $border-radius;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+
+  .profile-header {
+    padding: 3rem 1rem;
+    text-align: center;
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+    background: linear-gradient(135deg, $blue-color 0%, $golden-color 100%);
+    color: white;
+
+    .avatar {
+        width: 90px;
+        height: 90px;
+        margin: 0 auto 1rem;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .title {
+        margin: 0.5rem 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        background: rgba(255, 255, 255, 0.25);
+        border-radius: 20px;
+        font-size: 0.85rem;
+    }
+  }
+
+  .content {
+    padding: 2rem;
+
+    .section {
+        margin-bottom: 2.5rem;
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+        }
+
+        .card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-radius: $border-radius;
+            background: #f8fafc;
+            margin-bottom: 1rem;
+
+            .card-logo {
+                color: $blue-color;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                border-radius: 5px;
+                background-color: color-mix(in srgb, $blue-color, transparent 90%);
+            }
+
+            .card-title {
+                font-size: 0.8rem;
+                color: $gray-text-color;
+            }
+
+            .card-info {
+                font-weight: 500;
+                color: $bg-color;
+            }
+        }
+
+        .access {
+            display: flex;
+            gap: 1rem;
+            padding: 1.2rem;
+            border-radius: $border-radius;
+            font-size: 0.9rem;
+
+            &.customer
+            {
+                background: rgba($green-color, 0.10);
+                color: $green-color;
+            }
+
+            &.admin
+            {
+                background: rgba($golden-color, 0.10);
+                color: $golden-color;
+            }
+
+            .access-info {
+                margin: 0.3rem 0 0;
+                color: $gray-text-color;
+            }
+        }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .profile {
+    margin: 1rem;
+
+    .content {
+      padding: 1.5rem 1rem;
+    }
+  }
+}
