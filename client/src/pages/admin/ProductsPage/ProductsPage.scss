@@ -1,0 +1,89 @@
+@use "../../../styles/variables" as *;
+
+.products-page {
+  min-height: 100vh;
+
+  .flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .manage-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: $gray-text-color;
+    }
+
+    a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      padding: 10px 16px;
+      border-radius: $border-radius;
+
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      color: #fff;
+
+      background: linear-gradient(135deg, $blue-color 0%, $golden-color 100%);
+
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+      transition: 0.2s ease;
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+      }
+    }
+  }
+
+  .statistics-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 26px;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 520px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .statistic-item {
+    background: #fff;
+    border-radius: $border-radius;
+    padding: 18px 20px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    .statistic-title {
+      font-size: 13px;
+      color: $gray-text-color;
+      margin-bottom: 10px;
+    }
+
+    .statistic-data {
+      font-size: 26px;
+      font-weight: 700;
+      color: $blue-color;
+    }
+  }
+
+  .error {
+    margin-top: 20px;
+    color: $error-color;
+    font-weight: 500;
+  }
+
+  .products-manage-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}

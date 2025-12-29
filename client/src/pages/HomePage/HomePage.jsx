@@ -9,14 +9,14 @@ import "./HomePage.scss"
 const HomePage = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const { data: categories, isLoadingCategories, errorCategories } = useQuery({
+  const { data: categories, isLoading: isLoadingCategories, error: errorCategories } = useQuery({
     queryKey: ['categories'],
     queryFn: () => categoriesAPI.getAll(),
     staleTime: 3 * 60 * 1000,
     cacheTime: 10 * 60 * 1000
   });
 
-  const { data: products, isLoadingProducts, errorProducts } = useQuery({
+  const { data: products, isLoading: isLoadingProducts, error: errorProducts } = useQuery({
     queryKey: ['products', selectedCategory],
     queryFn: () => productsAPI.getAll(selectedCategory ? {category: selectedCategory} : {}),
     staleTime: 3 * 60 * 1000,
