@@ -1,6 +1,6 @@
 @use "../../../styles/variables" as *;
 
-.products-page {
+.categories-page {
   min-height: 100vh;
 
   .flex-container {
@@ -40,56 +40,10 @@
     }
   }
 
-  .statistics-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 26px;
-
-    @media (max-width: 1024px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media (max-width: 520px) {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .statistic-item {
-    background: #fff;
-    border-radius: $border-radius;
-    padding: 18px 20px;
-
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-
-    .statistic-title {
-      font-size: 13px;
-      color: $gray-text-color;
-      margin-bottom: 10px;
-    }
-
-    .statistic-data {
-      font-size: 26px;
-      font-weight: 700;
-      color: $blue-color;
-    }
-  }
-
   .error {
     margin-top: 20px;
     color: $error-color;
     font-weight: 500;
-  }
-
-  .products-manage-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .observer
-  {
-    height: 40px;
   }
 
   .error-message {
@@ -99,5 +53,11 @@
     background: $error-color;
     color: #fff;
     font-size: 0.9rem;
+  }
+
+  .categories-manage-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 }

@@ -1,0 +1,112 @@
+@use "../../styles/variables" as *;
+
+.category-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-left {
+
+    .title {
+      font-size: 16px;
+      font-weight: 600;
+      color: $bg-color;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .description {
+      font-size: 13px;
+      color: $gray-text-color;
+      margin-bottom: 5px;
+    }
+  }
+  
+
+  .card-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+
+    .btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 25px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.2s ease;
+    }
+
+    .edit {
+        text-decoration: none;
+        background: color-mix(in srgb, $blue-color, transparent 90%);
+        color: $blue-color;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
+    .delete {
+        background: color-mix(in srgb, $error-color, transparent 90%);
+        color: $error-color;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .category-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 14px;
+
+    .card-left {
+      gap: 8px;
+      flex-wrap: wrap;
+
+      .title {
+        font-size: 16px;
+      }
+
+      .description {
+        font-size: 14px;
+        word-break: break-word;
+      }
+    }
+
+    .card-actions {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-left: 0;
+
+      .btn {
+        flex: 1 1 auto;
+        min-width: 100px;
+        justify-content: center;
+      }
+    }
+  }
+}

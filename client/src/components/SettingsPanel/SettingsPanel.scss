@@ -1,0 +1,78 @@
+@use "../../styles/variables" as *;
+
+.settings-container
+{
+    .categories-container {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+
+        .category {
+            padding: 10px 18px;
+            background: #ffffff;
+            border-radius: $border-radius;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: $gray-text-color;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+            transition: all 0.25s ease;
+
+            &:hover {
+                background: #f1f5f9;
+            }
+
+            &.active {
+                background: $blue-color;
+                color: #ffffff;
+                border-color: $blue-color;
+            }
+        }
+    }
+
+    .category-error
+    {
+        font-size: 1rem;
+        margin-bottom: 8px;
+        color: $error-color;
+    }
+
+    .search-container,
+    .sort-container {
+        margin-bottom: 16px;
+
+        input,
+        select {
+            width: 30%;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: $border-radius;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            color: $gray-text-color;
+            transition: all 0.25s ease;
+            outline: none;
+
+            &:hover {
+                background: #f8fafc;
+            }
+
+            &:focus {
+                border-color: $blue-color;
+                box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+                background: #ffffff;
+            }
+
+            @media (max-width: 640px)
+            {
+                width: 60%;
+            }
+        }
+
+        select {
+            cursor: pointer;
+        }
+    }
+}
