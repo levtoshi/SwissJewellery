@@ -59,15 +59,72 @@ const ProductForm = () => {
         mutationFn: async (data) => (id ?
             await productsAPI.update(id, data) :
             await productsAPI.create(data)),
-        onSuccess: () => {
+        onMutate: async (data) => {
+            await queryClient.cancelQueries({ queryKey: ['products'] });
+            const previousProducts = queryClient.getQueryData(['products']);
+            if (id)
+            {
+                queryClient.setQueriesData({ queryKey: ['products'] }, (old) =>
+                {
+                    if (!old)
+                        return old;
+                    return {
+                        ...old,
+                        pages: old.pages.map(page => ({
+                            ...page,
+                            products: page.products.map(p => p._id === id ? { ...p, ...data } : p)
+                        }))
+                    };
+                });
+            }
+            else
+            {
+                queryClient.setQueriesData({ queryKey: ['products'] }, (old) =>
+                {
+                    if (!old || old.pages.length === 0)
+                        return old;
+                    const tempId = `temp-${Date.now()}`;
+                    return {
+                        ...old,
+                        pages: [
+                            {
+                                ...old.pages[0],
+                                products: [{ _id: tempId, ...data }, ...old.pages[0].products]
+                            },
+                            ...old.pages.slice(1)
+                        ]
+                    };
+                });
+            }
+            return { previousProducts };
+        },
+        onSuccess: (data) => {
+            if (!id)
+            {
+                queryClient.setQueriesData({ queryKey: ['products'] }, (old) =>
+                {
+                    if (!old)
+                        return old;
+                    return {
+                        ...old,
+                        pages: old.pages.map(page => ({
+                            ...page,
+                            products: page.products.map(p => p._id.startsWith('temp-') ? data : p)
+                        }))
+                    };
+                });
+            }
             queryClient.invalidateQueries({queryKey: ["products"], exact: false});
             queryClient.invalidateQueries({queryKey: ["product", id], exact: true});
             toast.success(`Product ${(id) ? "updated" : "added"}`);
             navigate("/admin/products");
         },
-        onError: (error) =>
-        {
-            toast.error(error.message);
+        onError: (error, context) => {
+            queryClient.setQueriesData({ queryKey: ['products'] }, context.previousProducts);
+            toast.error(error.response?.data?.message || error.response?.data?.error || error.message);
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ['products'] });
         }
     });
 
@@ -126,7 +183,7 @@ const ProductForm = () => {
     {
         return (
             <p className="loading-error">
-                Error loading categories: {errorCategories.message}
+                Error loading categories: {errorCategories.response?.data?.message || errorCategories.response?.data?.error || errorCategories.message}
             </p>
         )
     }
@@ -135,14 +192,14 @@ const ProductForm = () => {
     {
         return (
             <p className="loading-error">
-            Error loading product: {errorProduct.message}
+                Error loading product: {errorProduct.response?.data?.message || errorProduct.response?.data?.error || errorProduct.message}
             </p> 
         )
     }
 
     return (
-        <div className="note-form-page">
-            <form className="note-form" onSubmit={handleSubmit}>
+        <div className="product-form-page">
+            <form className="product-form" onSubmit={handleSubmit}>
                 <h2 className="form-title">{id ? "Edit Product" : "Create New Product"}</h2>
                 <p className="form-subtitle">Fill all fields for product {id ? "editing" : "creation"}</p>
 
@@ -276,7 +333,7 @@ const ProductForm = () => {
 
                 {mutation.isError && (
                     <div className="error-message">
-                        Error: {mutation.error.message}
+                        Error: {mutation.error.response?.data?.message || mutation.error.response?.data?.error || mutation.error.message}
                     </div>
                 )}
             </form>

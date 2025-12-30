@@ -5,9 +5,6 @@ import { Link } from "react-router-dom"
 
 const ProductCardAdmin = ({ product, onDelete }) => {
   const hasDiscount = product.discount > 0;
-  const oldPrice = hasDiscount
-    ? Math.round(product.price / (1 - product.discount / 100))
-    : null;
 
   return (
     <div className="product-admin-card">
@@ -25,8 +22,8 @@ const ProductCardAdmin = ({ product, onDelete }) => {
 
         <div className="meta-row">
           <div className="price">
-            <span className="current">${product.price}</span>
-            {hasDiscount && <span className="old">${oldPrice}</span>}
+            <span className="current">${product.finalPrice}</span>
+            {hasDiscount && <span className="old">${product.price}</span>}
             {hasDiscount && (
               <span className="discount">-{product.discount}%</span>
             )}
@@ -37,7 +34,7 @@ const ProductCardAdmin = ({ product, onDelete }) => {
       </div>
 
       <div className="card-actions">
-        <Link to={`/admin/edit/${product._id}`} className="edit btn">
+        <Link to={`/admin/products/edit/${product._id}`} className="edit btn">
           <Pencil size={16} /> Edit
         </Link>
         

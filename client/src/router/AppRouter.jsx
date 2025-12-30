@@ -2,17 +2,18 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Layout from '../components/Layout/Layout';
 import HomePage from '../pages/HomePage/HomePage';
-import ProductPage from '../pages/ProductPage';
+import ProductPage from '../pages/ProductPage/ProductPage';
 import LoginPage from '../pages/auth/LoginPage/LoginPage';
 import RegisterPage from '../pages/auth/RegisterPage/RegisterPage';
 import CheckoutPage from '../pages/CheckoutPage';
 import ProfilePage from '../pages/ProfilePage/ProfilePage';
 import AdminLayout from '../pages/admin/AdminLayout/AdminLayout';
-import CategoriesPage from '../pages/admin/CategoriesPage';
+import CategoriesPage from '../pages/admin/CategoriesPage/CategoriesPage';
 import ProductsPage from '../pages/admin/ProductsPage/ProductsPage';
 import OrdersPage from '../pages/admin/OrdersPage';
 import NotFound from '../pages/NotFound/NotFound';
 import ProductForm from '../pages/admin/ProductForm/ProductForm';
+import CategoryForm from "../pages/admin/CategoryForm/CategoryForm";
 
 function ProtectedRoute({ children, adminOnly = false }) {
   const { isAuthenticated, user, loading } = useAuth();
@@ -58,8 +59,12 @@ function AppRouter() {
           <Route path="products" element={<ProductsPage />} />
           <Route path="categories" element={<CategoriesPage />} />
           <Route path="orders" element={<OrdersPage />} />
-          <Route path="create" element={<ProductForm />} />
-          <Route path="edit/:id" element={<ProductForm />} />
+
+          <Route path="/admin/products/create" element={<ProductForm />} />
+          <Route path="/admin/products/edit/:id" element={<ProductForm />} />
+
+          <Route path="/admin/categories/create" element={<CategoryForm />} />
+          <Route path="/admin/categories/edit/:id" element={<CategoryForm />} />
         </Route>
         <Route path='*' element={<NotFound/>} />
       </Route>

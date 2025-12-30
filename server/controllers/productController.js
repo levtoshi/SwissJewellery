@@ -128,7 +128,7 @@ export const createProduct = async (req, res, next) => {
       discount: discount || 0,
       stock: stock || 0,
       image,
-      images: images || [],
+      images: images || [image],
       category
     });
     

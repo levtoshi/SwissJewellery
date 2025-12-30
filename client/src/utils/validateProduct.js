@@ -5,6 +5,10 @@ export const validateProduct = (name, value) => {
         case "name":
             if (!value?.trim())
                 errors.name = "Product name is required";
+            else if (value?.length < 3)
+                errors.name = "Product description must be at least 3 chars long";
+            else if (value?.length >= 200)
+                errors.name = "Product description must be no more than 200 chars long";
             break;
 
         case "description":
@@ -12,6 +16,8 @@ export const validateProduct = (name, value) => {
                 errors.description = "Product description is required";
             else if (value?.length < 10)
                 errors.description = "Product description must be at least 10 chars long";
+            else if (value?.length >= 2000)
+                errors.description = "Product description must be no more than 2000 chars long";
             break;
 
         case "price":

@@ -1,14 +1,13 @@
 import { ShoppingCart, CircleAlert } from "lucide-react";
 import "./ProductCard.scss";
 import toast from 'react-hot-toast';
+import { useNavigate } from "react-router-dom";
 
-const ProductCard = ({ product, setProductId, onAddToCart }) => {
+const ProductCard = ({ product, onAddToCart }) => {
   const hasDiscount = product.discount > 0;
-  const originalPrice = hasDiscount
-    ? product.price / (1 - product.discount / 100)
-    : null;
 
-  const savingPrice = (originalPrice - product.price);
+  const savingPrice = (product?.price - product?.finalPrice);
+  const navigate = useNavigate();
 
   const handleAddToCart = (e) =>
   {
@@ -19,7 +18,7 @@ const ProductCard = ({ product, setProductId, onAddToCart }) => {
   return (
     <div
       className="product-card"
-      onClick={() => setProductId(product._id)}
+      onClick={() => navigate(`/products/${product._id}`)}
     >
       <div className="image-wrapper">
         <img src={product.image} alt={product.name} />
@@ -48,11 +47,11 @@ const ProductCard = ({ product, setProductId, onAddToCart }) => {
         </p>
 
         <div className="price-container">
-          <span className="price">${product.price}</span>
+          <span className="price">${product.finalPrice}</span>
 
           {hasDiscount && (
             <span className="old-price">
-              ${originalPrice.toFixed(0)}
+              ${product.price}
             </span>
           )}
         </div>

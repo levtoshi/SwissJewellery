@@ -60,6 +60,7 @@ const seedData = async () => {
         discount: 5,
         stock: 6,
         image: 'https://cdn-media.glamira.com/media/product/newgeneration/view/1/sku/Queen-3crt/diamond/diamond-Brillant_AA/stone2/diamond-Brillant_AAA/alloycolour/yellow.jpg',
+        images: ['https://cdn-media.glamira.com/media/product/newgeneration/view/1/sku/Queen-3crt/diamond/diamond-Brillant_AA/stone2/diamond-Brillant_AAA/alloycolour/yellow.jpg'],
         category: categories[0]._id
       },
       {
@@ -69,6 +70,7 @@ const seedData = async () => {
         discount: 0,
         stock: 0,
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHZsiqPruws4cW5133IIF2GUesLWhbzjiHJg&s',
+        images: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHZsiqPruws4cW5133IIF2GUesLWhbzjiHJg&s'],
         category: categories[0]._id
       },
       {
@@ -78,6 +80,7 @@ const seedData = async () => {
         discount: 10,
         stock: 0,
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSjoQbzswRimVzRqgb6ljyjnfMpIFqzvWCOQ&s',
+        images: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSjoQbzswRimVzRqgb6ljyjnfMpIFqzvWCOQ&s'],
         category: categories[0]._id
       },
       {
@@ -87,6 +90,7 @@ const seedData = async () => {
         discount: 0,
         stock: 5,
         image: 'https://www.heavenlylondon.com/cdn/shop/files/TheTamaraRing_140.jpg?v=1747138625',
+        images: ['https://www.heavenlylondon.com/cdn/shop/files/TheTamaraRing_140.jpg?v=1747138625'],
         category: categories[0]._id
       },
       {
@@ -96,6 +100,7 @@ const seedData = async () => {
         discount: 15,
         stock: 7,
         image: 'https://www.candere.com/media/jewellery/images/C001952__1.jpeg',
+        images: ['https://www.candere.com/media/jewellery/images/C001952__1.jpeg'],
         category: categories[0]._id
       },
 
@@ -107,6 +112,7 @@ const seedData = async () => {
         discount: 10,
         stock: 8,
         image: 'https://media.istockphoto.com/id/1289163992/photo/flowers-earrings-isolated.jpg?s=612x612&w=0&k=20&c=7HMQijV5SoKh5zd8l2Dc4qKMBJ9BkQA4QQ_Ln4cCDuU=',
+        images: ['https://media.istockphoto.com/id/1289163992/photo/flowers-earrings-isolated.jpg?s=612x612&w=0&k=20&c=7HMQijV5SoKh5zd8l2Dc4qKMBJ9BkQA4QQ_Ln4cCDuU='],
         category: categories[1]._id
       },
       {
@@ -116,6 +122,7 @@ const seedData = async () => {
         discount: 0,
         stock: 10,
         image: 'https://www.ben-amun.com/cdn/shop/products/22105_1.jpg?v=1724095315',
+        images: ['https://www.ben-amun.com/cdn/shop/products/22105_1.jpg?v=1724095315'],
         category: categories[1]._id
       },
       {
@@ -125,6 +132,7 @@ const seedData = async () => {
         discount: 5,
         stock: 6,
         image: 'https://agmesnyc.com/cdn/shop/files/AGMES_Alyce_Earrings_YellowGold.jpg?v=1765999474&width=2776',
+        images: ['https://agmesnyc.com/cdn/shop/files/AGMES_Alyce_Earrings_YellowGold.jpg?v=1765999474&width=2776'],
         category: categories[1]._id
       },
       {
@@ -134,6 +142,7 @@ const seedData = async () => {
         discount: 0,
         stock: 4,
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxvqMaxlMztCqECWIrIm5_sgzmOgwlnpE0Bg&s',
+        images: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxvqMaxlMztCqECWIrIm5_sgzmOgwlnpE0Bg&s'],
         category: categories[1]._id
       },
       {
@@ -143,6 +152,7 @@ const seedData = async () => {
         discount: 15,
         stock: 12,
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRftSEFOnSJ7UMkRxMQls-q9YYdzHzCp1ozIA&s',
+        images: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRftSEFOnSJ7UMkRxMQls-q9YYdzHzCp1ozIA&s'],
         category: categories[1]._id
       },
 
@@ -154,6 +164,7 @@ const seedData = async () => {
         discount: 5,
         stock: 5,
         image: 'https://cdn.shopify.com/s/files/1/2579/7674/files/Ana-Luisa-Jewelry-Necklaces-Pendants-Gold-Pendant-Necklace-Pebble-Gold_b2efe084-908a-4ab5-ba7d-66fee14c61df.jpg?v=1764598549',
+        images: ['https://cdn.shopify.com/s/files/1/2579/7674/files/Ana-Luisa-Jewelry-Necklaces-Pendants-Gold-Pendant-Necklace-Pebble-Gold_b2efe084-908a-4ab5-ba7d-66fee14c61df.jpg?v=1764598549'],
         category: categories[2]._id
       },
       {
@@ -163,6 +174,7 @@ const seedData = async () => {
         discount: 0,
         stock: 4,
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6yPRAULEwKnNdPncfbupW1X_flhMPDh_19w&s',
+        images: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6yPRAULEwKnNdPncfbupW1X_flhMPDh_19w&s'],
         category: categories[2]._id
       },
       {
@@ -172,6 +184,7 @@ const seedData = async () => {
         discount: 10,
         stock: 3,
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyfqef6iGTNiK_I-61c3wwxdq_cyOD2EOH7A&s',
+        images: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyfqef6iGTNiK_I-61c3wwxdq_cyOD2EOH7A&s'],
         category: categories[2]._id
       },
       {
@@ -181,6 +194,7 @@ const seedData = async () => {
         discount: 0,
         stock: 7,
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShiMAjvdckTaPuq1ihzMVjERKXF6DQz5iKDA&s',
+        images: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShiMAjvdckTaPuq1ihzMVjERKXF6DQz5iKDA&s'],
         category: categories[2]._id
       },
       {
@@ -190,6 +204,7 @@ const seedData = async () => {
         discount: 15,
         stock: 4,
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnQ6rbjoa_5HOBlj5Es0-uAsq2kroXNNPn_w&s',
+        images: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnQ6rbjoa_5HOBlj5Es0-uAsq2kroXNNPn_w&s'],
         category: categories[2]._id
       },
 
@@ -201,6 +216,7 @@ const seedData = async () => {
         discount: 10,
         stock: 0,
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSA6lx3f8lMCIV72gxK4UBw6v8RWEfdWjAJbQ&s',
+        images: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSA6lx3f8lMCIV72gxK4UBw6v8RWEfdWjAJbQ&s'],
         category: categories[3]._id
       },
       {
@@ -210,6 +226,7 @@ const seedData = async () => {
         discount: 0,
         stock: 2,
         image: 'https://www.alexandani.com/cdn/shop/files/there-cannoli-be-you-bolo-bracelet-1-AO260030WSG.jpg?crop=center&height=2000&v=1765983210&width=2000',
+        images: ['https://www.alexandani.com/cdn/shop/files/there-cannoli-be-you-bolo-bracelet-1-AO260030WSG.jpg?crop=center&height=2000&v=1765983210&width=2000'],
         category: categories[3]._id
       },
       {
@@ -219,6 +236,7 @@ const seedData = async () => {
         discount: 5,
         stock: 5,
         image: 'https://chrono1010.com/images/products/e320fffd-a630-4c9a-a5a9-c4dabb4a538d.png',
+        images: ['https://chrono1010.com/images/products/e320fffd-a630-4c9a-a5a9-c4dabb4a538d.png'],
         category: categories[3]._id
       },
       {
@@ -228,6 +246,7 @@ const seedData = async () => {
         discount: 0,
         stock: 6,
         image: 'https://static.e-pandora.ua/31373/conversions/1760711138-webp.webp',
+        images: ['https://static.e-pandora.ua/31373/conversions/1760711138-webp.webp'],
         category: categories[3]._id
       },
       {
@@ -237,6 +256,7 @@ const seedData = async () => {
         discount: 15,
         stock: 3,
         image: 'https://kymee.in/cdn/shop/files/KBC0041_1_copy.webp?v=1758084101',
+        images: ['https://kymee.in/cdn/shop/files/KBC0041_1_copy.webp?v=1758084101'],
         category: categories[3]._id
       },
 
@@ -248,6 +268,7 @@ const seedData = async () => {
         discount: 5,
         stock: 5,
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSPPIaJ1XQxcfM-vbJHKQE5xrkk-lIVP5YjA&s',
+        images: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSPPIaJ1XQxcfM-vbJHKQE5xrkk-lIVP5YjA&s'],
         category: categories[4]._id
       },
       {
@@ -257,6 +278,7 @@ const seedData = async () => {
         discount: 0,
         stock: 3,
         image: 'https://watches-master.ua/uploads/files/CatalogProducts/images_49124/243ccc.jpeg',
+        images: ['https://watches-master.ua/uploads/files/CatalogProducts/images_49124/243ccc.jpeg'],
         category: categories[4]._id
       },
       {
@@ -266,6 +288,7 @@ const seedData = async () => {
         discount: 10,
         stock: 2,
         image: 'https://www.hardybrothers.com.au/cdn/shop/products/jacob-and-co-astronomia-solar-planets-zodiac-44mm-sol.png?v=1692756596&width=960',
+        images: ['https://www.hardybrothers.com.au/cdn/shop/products/jacob-and-co-astronomia-solar-planets-zodiac-44mm-sol.png?v=1692756596&width=960'],
         category: categories[4]._id
       },
       {
@@ -275,6 +298,7 @@ const seedData = async () => {
         discount: 0,
         stock: 1,
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuLex0ETYJdP8picnRSaZq9oQybKTQqFuB3w&s',
+        images: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuLex0ETYJdP8picnRSaZq9oQybKTQqFuB3w&s'],
         category: categories[4]._id
       },
       {
@@ -284,6 +308,7 @@ const seedData = async () => {
         discount: 15,
         stock: 2,
         image: 'https://imagedelivery.net/lyg2LuGO05OELPt1DKJTnw/d9ae768c-c408-4513-c40d-c61fa5d44100/w=400x400',
+        images: ['https://imagedelivery.net/lyg2LuGO05OELPt1DKJTnw/d9ae768c-c408-4513-c40d-c61fa5d44100/w=400x400','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrnA4fb5RsFLHxss9o9T7WYGR0l0Up1Nkylg&s'],
         category: categories[4]._id
       }
     ];
