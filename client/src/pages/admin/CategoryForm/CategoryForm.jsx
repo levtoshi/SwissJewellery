@@ -70,9 +70,6 @@ const CategoryForm = () => {
     onError: (error, context) => {
       queryClient.setQueryData(['categories'], context.previousCategories);
       toast.error(error.response?.data?.message || error.response?.data?.error || error.message);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
     }
   });
   

@@ -1,25 +1,40 @@
 import Order from '../models/Order.js';
 import Cart from '../models/Cart.js';
+import Product from '../models/Product.js';
 
 // POST /api/orders
 export const createOrder = async (req, res, next) => {
   try {
-    const { items, guestInfo, comment } = req.body;
+    const { items, total, guestInfo, comment } = req.body;
     const userId = req.user?._id || null;
 
     if (!items || items.length === 0) {
       return res.status(400).json({ error: 'Cart is empty' });
     }
 
-    // General sum calc
-    const totalAmount = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    // Validation: if no user, guestInfo is required
+    if (!userId && !guestInfo) {
+      return res.status(400).json({ error: 'Guest information is required for guest orders' });
+    }
+
+    // Check stock availability
+    for (const item of items) {
+      const product = await Product.findById(item.product);
+      if (!product) {
+        return res.status(400).json({ error: `Product not found` });
+      }
+      if (product.stock < item.quantity) {
+        return res.status(400).json({ error: `Insufficient stock for ${product.name}` });
+      }
+    }
 
     const orderData = {
       user: userId,
       items,
-      totalAmount,
+      totalAmount : total,
       comment: comment || '',
-      status: 'new'
+      status: 'new',
+      address: guestInfo.address
     };
 
     // If guest - add guestInfo
@@ -29,6 +44,7 @@ export const createOrder = async (req, res, next) => {
 
     const order = await Order.create(orderData);
     await order.populate('items.product');
+    await order.populate('user', 'email fullName address');
 
     // Clear cart if user autorized
     if (userId) {
@@ -36,6 +52,11 @@ export const createOrder = async (req, res, next) => {
         { user: userId },
         { items: [] }
       );
+    }
+
+    // Update product stock
+    for (const item of items) {
+      await Product.findByIdAndUpdate(item.product, { $inc: { stock: -item.quantity } });
     }
 
     res.status(201).json(order);
@@ -56,7 +77,7 @@ export const getOrders = async (req, res, next) => {
     if (!isAdmin) {
       filter.user = req.user._id;
     }
-
+    
     // Filter with status
     if (status) {
       filter.status = status;
@@ -64,7 +85,7 @@ export const getOrders = async (req, res, next) => {
 
     const orders = await Order.find(filter)
       .populate('items.product')
-      .populate('user', 'email fullName')
+      .populate('user', 'email fullName address')
       .sort({ createdAt: -1 });
 
     res.json(orders);
@@ -78,7 +99,7 @@ export const getOrderById = async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id)
       .populate('items.product')
-      .populate('user', 'email fullName');
+      .populate('user', 'email fullName address');
 
     if (!order) {
       return res.status(404).json({ error: 'Order not found' });
@@ -108,16 +129,33 @@ export const updateOrderStatus = async (req, res, next) => {
     if (!validStatuses.includes(status)) {
       return res.status(400).json({ error: 'Invalid status' });
     }
-
-    const order = await Order.findByIdAndUpdate(
-      req.params.id,
-      { status },
-      { new: true }
-    ).populate('items.product');
+    
+    const order = await Order.findById(req.params.id).populate('items.product');
 
     if (!order) {
       return res.status(404).json({ error: 'Order not found' });
     }
+
+    const oldStatus = order.status;
+
+    if (status === 'cancelled' && oldStatus !== 'cancelled') {
+      for (const item of order.items) {
+        await Product.findByIdAndUpdate(item.product._id, { $inc: { stock: item.quantity } });
+      }
+    } else if (oldStatus === 'cancelled' && status !== 'cancelled') {
+      for (const item of order.items) {
+        const product = await Product.findById(item.product._id);
+        if (product.stock < item.quantity) {
+          return res.status(400).json({ error: `Insufficient stock for ${product.name} to uncancel order` });
+        }
+        await Product.findByIdAndUpdate(item.product._id, { $inc: { stock: -item.quantity } });
+      }
+    }
+
+    order.status = status;
+    await order.save();
+
+    await order.populate('items.product');
 
     res.json(order);
   } catch (error) {

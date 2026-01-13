@@ -1,5 +1,5 @@
 import express from 'express';
-import { protect, adminOnly } from '../middleware/auth.js';
+import { protect, adminOnly, optionalAuth } from '../middleware/auth.js';
 import * as authController from '../controllers/authController.js';
 import * as categoryController from '../controllers/categoryController.js';
 import * as productController from '../controllers/productController.js';
@@ -30,7 +30,7 @@ router.patch('/products/:id', protect, adminOnly, productController.updateProduc
 router.delete('/products/:id', protect, adminOnly, productController.deleteProduct);
 
 // ORDERS
-router.post('/orders', orderController.createOrder);
+router.post('/orders', optionalAuth, orderController.createOrder);
 router.get('/orders', protect, orderController.getOrders);
 router.get('/orders/:id', protect, orderController.getOrderById);
 router.patch('/orders/:id/status', protect, adminOnly, orderController.updateOrderStatus);

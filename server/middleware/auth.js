@@ -44,11 +44,26 @@ export const adminOnly = (req, res, next) => {
   }
 };
 
-// Middleware for Customer or Admin roles check
-export const customerOrAdmin = (req, res, next) => {
-  if (req.user && (req.user.role === 'customer' || req.user.role === 'admin')) {
+// Middleware for optional auth (for guests and users)
+export const optionalAuth = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.split(' ')[1];
+      const decoded = verifyAccessToken(token);
+
+      if (decoded) {
+        const user = await User.findById(decoded.id).select('-password -refreshToken');
+        if (user) {
+          req.user = user;
+        }
+      }
+    }
+
     next();
-  } else {
-    res.status(403).json({ error: 'Access denied' });
+  } catch (error) {
+    // Ignore auth errors for optional auth
+    next();
   }
 };

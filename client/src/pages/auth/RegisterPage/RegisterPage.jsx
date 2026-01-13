@@ -59,6 +59,15 @@ const RegisterPage = () => {
       await register(formData);
       toast.success("Register success!");
       navigate("/");
+      setForm({
+        email: "",
+        password: "",
+        retryPassword: "",
+        fullName: "",
+        phone: "",
+        address: ""
+      });
+      setErrors({});
     } catch (error) {
       toast.error(error.response?.data?.error || "Register error!");
     }

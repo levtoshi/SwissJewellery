@@ -70,14 +70,12 @@ const ProductsPage = () => {
       return { previousProducts };
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'], exact: false });
       toast.success('Product deleted!');
     },
     onError: (error, id, context) => {
       queryClient.setQueryData(['products', selectedCategory, debouncedQuery, selectedSort], context.previousProducts);
       toast.error(error.response?.data?.message || error.response?.data?.error || error.message);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'], exact: false });
     }
   });
 

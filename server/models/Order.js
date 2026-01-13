@@ -72,6 +72,13 @@ const OrderSchema = new mongoose.Schema(
       default: '',
       maxlength: [500, 'Comment must be shorter than 500 chars']
     },
+
+    // Order address
+    address: {
+      type: String,
+      required: true,
+      trim: true
+    },
     
     // Soft delete
     deletedAt: {

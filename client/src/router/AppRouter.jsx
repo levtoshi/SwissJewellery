@@ -5,12 +5,12 @@ import HomePage from '../pages/HomePage/HomePage';
 import ProductPage from '../pages/ProductPage/ProductPage';
 import LoginPage from '../pages/auth/LoginPage/LoginPage';
 import RegisterPage from '../pages/auth/RegisterPage/RegisterPage';
-import CheckoutPage from '../pages/CheckoutPage';
+import CheckoutPage from '../pages/CheckoutPage/CheckoutPage';
 import ProfilePage from '../pages/ProfilePage/ProfilePage';
 import AdminLayout from '../pages/admin/AdminLayout/AdminLayout';
 import CategoriesPage from '../pages/admin/CategoriesPage/CategoriesPage';
 import ProductsPage from '../pages/admin/ProductsPage/ProductsPage';
-import OrdersPage from '../pages/admin/OrdersPage';
+import OrdersPage from '../pages/admin/OrdersPage/OrdersPage';
 import NotFound from '../pages/NotFound/NotFound';
 import ProductForm from '../pages/admin/ProductForm/ProductForm';
 import CategoryForm from "../pages/admin/CategoryForm/CategoryForm";
@@ -39,9 +39,7 @@ function AppRouter() {
         <Route path="register" element={<RegisterPage />} />
         
         <Route path="checkout" element={
-          <ProtectedRoute>
-            <CheckoutPage />
-          </ProtectedRoute>
+          <CheckoutPage />
         } />
         
         <Route path="profile" element={

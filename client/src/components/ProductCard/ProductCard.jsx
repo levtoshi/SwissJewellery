@@ -2,17 +2,20 @@ import { ShoppingCart, CircleAlert } from "lucide-react";
 import "./ProductCard.scss";
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
 
-const ProductCard = ({ product, onAddToCart }) => {
+const ProductCard = ({ product }) => {
   const hasDiscount = product.discount > 0;
 
   const savingPrice = (product?.price - product?.finalPrice);
   const navigate = useNavigate();
 
+  const { addItem } = useCart();
+
   const handleAddToCart = (e) =>
   {
     e.stopPropagation();
-    onAddToCart(product._id);
+    addItem(product);
   }
 
   return (

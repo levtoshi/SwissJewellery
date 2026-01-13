@@ -9,8 +9,8 @@ dotenv.config();
 
 const seedUsers = [
   {
-    email: 'admin@shop.com',
-    password: 'admin123',
+    email: 'admin@dima.com',
+    password: 'admin777',
     fullName: 'Admin',
     phone: '+380501234567',
     address: 'Kyiv',
