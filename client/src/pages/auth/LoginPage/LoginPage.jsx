@@ -53,15 +53,14 @@ const LoginPage = ({onLogin}) => {
       await login({...form});
       toast.success('Success login!');
       navigate('/');
+      setForm({
+        email: "",
+        password: ""
+      });
+      setErrors({});
     } catch (error) {
       toast.error(error.response?.data?.error || 'Login error');
     }
-
-    setForm({
-      email: "",
-      password: ""
-    });
-    setErrors({});
   }
 
   return (
@@ -105,22 +104,6 @@ const LoginPage = ({onLogin}) => {
         
         <button className="login-btn" type="submit">Login</button>
       </form>
-    
-      <div className="line"></div>
-
-      <div className="test-container">
-        <p className="test-title">Test accounts</p>
-
-        <div className="test-data">
-          <h6 className="test-data-title">Admin</h6>
-          <p className="test-data-subtitle">admin@shop.com / admin123</p>
-        </div>
-
-        <div className="test-data">
-          <h6 className="test-data-title">User</h6>
-          <p className="test-data-subtitle">customer@shop.com / customer123</p>
-        </div>
-      </div>
     </div>
   )
 }

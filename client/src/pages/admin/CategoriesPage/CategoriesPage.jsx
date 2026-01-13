@@ -31,15 +31,13 @@ const CategoriesPage = () => {
       return { previousCategories };
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
       toast.success('Category deleted!');
     },
     onError: (error, context) => {
       queryClient.setQueryData(['categories'], context.previousCategories);
       const errorMessage = error.response?.data?.message || error.response?.data?.error || error.message;
       toast.error(errorMessage);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
     }
   });
 

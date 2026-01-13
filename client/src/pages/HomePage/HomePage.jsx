@@ -15,9 +15,6 @@ const HomePage = () => {
   const LIMIT = 12;
   const debouncedQuery = useDebounce(searchQuery);
 
-  // тимчасова заглушка, винесу це десь окремо коли буду робити весь функціонал з Cart
-  const onAddToCart = (id) => {};
-
   const observerTarget = useRef(null);
 
   const {
@@ -100,7 +97,7 @@ const HomePage = () => {
       {!isLoading && !error && products?.length > 0 && (
         <div className="products-container">
           {products?.map(product => (
-            <ProductCard key={product._id} product={product} onAddToCart={onAddToCart}/>
+            <ProductCard key={product._id} product={product}/>
           ))}
         </div>
       )}

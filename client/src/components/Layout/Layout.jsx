@@ -2,16 +2,16 @@ import { Outlet, NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Package, ShoppingCart, Shield, User, LogOut, LogIn, Contact, Menu, X } from 'lucide-react';
-import { useCartUI } from '../../context/CartContext';
-import CartSidebar from '../CartSidebar';
+import { useCart } from '../../context/CartContext';
+import CartSidebar from '../CartSidebar/CartSidebar';
 import './Layout.scss';
 
 function Layout() {
   const { isAuthenticated, user, logout } = useAuth();
-  const { toggleCart } = useCartUI();
+  const { toggleCart } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const activeClass = ({ isActive }) => isActive ? 'nav-btn active' : 'nav-btn';
+  const activeClass = ({ isActive }) => isActive ? 'nav-link active' : 'nav-btn';
 
   return (
     <div className="layout">
@@ -23,11 +23,13 @@ function Layout() {
             <NavLink to="/" className={activeClass}>
               <Package size={20}/> Catalog
             </NavLink>
+            
+            <button onClick={toggleCart} className="nav-btn">
+              <ShoppingCart size={20} /> Cart
+            </button>
+            
             {isAuthenticated ? (
               <>
-                <button onClick={toggleCart} className="nav-btn">
-                  <ShoppingCart size={20} /> Cart
-                </button>
                 {user?.role === 'admin' && (
                   <NavLink to="/admin" className={activeClass}>
                     <Shield size={20}/> Admin panel
@@ -59,7 +61,7 @@ function Layout() {
       </header>
 
       <main><Outlet /></main>
-      <CartSidebar />
+      <CartSidebar/>
     </div>
   );
 }

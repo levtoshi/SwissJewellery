@@ -122,9 +122,6 @@ const ProductForm = () => {
         onError: (error, context) => {
             queryClient.setQueriesData({ queryKey: ['products'] }, context.previousProducts);
             toast.error(error.response?.data?.message || error.response?.data?.error || error.message);
-        },
-        onSettled: () => {
-            queryClient.invalidateQueries({ queryKey: ['products'] });
         }
     });
 

@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from '@tanstack/react-query';
+import { useCart } from "../../context/CartContext";
 import { productsAPI } from "../../api/products";
 import Loader from '../../components/Loader/Loader';
 import { ArrowLeft } from 'lucide-react';
-import "./ProductPage.scss"
+import toast from 'react-hot-toast';
+import "./ProductPage.scss";
 
 const ProductPage = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -18,8 +20,12 @@ const ProductPage = () => {
     cacheTime: 10 * 60 * 1000
   });
 
-  // тимчасова заглушка, винесу це десь окремо коли буду робити весь функціонал з Cart
-  const onAddToCart = (id) => {};
+  const { addItem } = useCart();
+
+  const handleAddToCart = (e) =>
+  {
+    addItem(product);
+  }
 
   if(isLoading)
   {
@@ -87,7 +93,7 @@ const ProductPage = () => {
 
           <button
               className="addToCart-btn"
-              onClick={() => onAddToCart(product._id)}
+              onClick={handleAddToCart}
               disabled={product.stock === 0}
           >
             Add to Cart

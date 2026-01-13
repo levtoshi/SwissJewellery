@@ -1,0 +1,113 @@
+@use "../../../styles/variables" as *;
+
+.orders-page {
+  min-height: 100vh;
+
+  .flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .manage-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: $gray-text-color;
+    }
+  }
+
+  .statistics-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 26px;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 520px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .statistic-item {
+    background: #fff;
+    border-radius: $border-radius;
+    padding: 18px 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    .statistic-title {
+      font-size: 13px;
+      color: $gray-text-color;
+      margin-bottom: 10px;
+    }
+
+    .statistic-data {
+      font-size: 26px;
+      font-weight: 700;
+      color: $blue-color;
+    }
+  }
+
+  .filters-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      label {
+        font-size: 14px;
+        font-weight: 500;
+        color: $gray-text-color;
+      }
+
+      .filter-select {
+        padding: 8px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: $border-radius;
+        background: #fff;
+        font-size: 14px;
+        color: $bg-color;
+        cursor: pointer;
+
+        &:focus {
+          outline: none;
+          border-color: $blue-color;
+          box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+        }
+      }
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+
+  .error {
+    margin-top: 20px;
+    color: $error-color;
+    font-weight: 500;
+  }
+
+  .orders-manage-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .error-message {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: $border-radius;
+    background: $error-color;
+    color: #fff;
+    font-size: 0.9rem;
+  }
+}

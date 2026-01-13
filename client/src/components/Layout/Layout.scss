@@ -33,7 +33,7 @@
         gap: 1rem;
         align-items: center;
 
-        .nav-btn {
+        .nav-link, .nav-btn {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -50,15 +50,21 @@
             cursor: pointer;
             transition: 0.2s all;
 
-            &:hover,
-            &:focus {
+            &:hover {
               background: $blue-color;
             }
+        }
 
-            &.active {
-              background: $blue-color;
-              font-weight: 600;
-            }
+        .nav-link
+        {
+          &:focus {
+            background: $blue-color;
+          }
+          
+          &.active {
+            background: $blue-color;
+            font-weight: 600;
+          }
         }
     }
 
@@ -93,7 +99,7 @@
         padding: 1rem 0;
       }
 
-      .nav-btn {
+      .nav-link, .nav-btn {
         width: 100%;
         padding: 15px;
       }
