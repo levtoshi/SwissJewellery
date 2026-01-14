@@ -34,6 +34,7 @@ router.post('/orders', optionalAuth, orderController.createOrder);
 router.get('/orders', protect, orderController.getOrders);
 router.get('/orders/:id', protect, orderController.getOrderById);
 router.patch('/orders/:id/status', protect, adminOnly, orderController.updateOrderStatus);
+router.patch('/orders/:id/cancel', protect, orderController.cancelOrder);
 router.delete('/orders/:id', protect, adminOnly, orderController.deleteOrder);
 
 // CART

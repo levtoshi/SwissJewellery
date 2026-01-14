@@ -1,22 +1,20 @@
-import { useState } from 'react';
-import Loader from "../../../components/Loader/Loader.jsx";
-import OrderCardAdmin from "../../../components/OrderCardAdmin/OrderCardAdmin.jsx";
-import ConfirmModal from "../../../components/ConfirmModal/ConfirmModal.jsx";
-import OrdersStatisticPanel from "../../../components/OrdersStatisticPanel/OrdersStatisticPanel.jsx"
-import useUpdateOrderStatus from '../../../hooks/orders/useUpdateOrderStatus.js';
-import useDeleteOrder from '../../../hooks/orders/useDeleteOrder.js';
-import useOrders from '../../../hooks/orders/useOrders.js';
-import "./OrdersPage.scss";
+import { useState } from 'react'
+import useOrders from '../../hooks/orders/useOrders'
+import useCancelOrder from '../../hooks/orders/useCancelOrder';
+import OrderCard from "../../components/OrderCard/OrderCard";
+import OrdersStatisticPanel from "../../components/OrdersStatisticPanel/OrdersStatisticPanel";
+import Loader from '../../components/Loader/Loader';
+import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
+import "./OrdersProfilePage.scss";
 
-const OrdersPage = () => {
+const OrdersProfilePage = () => {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   const { orders, isLoading, error } = useOrders();
-  const updateStatusMutation = useUpdateOrderStatus();
-  const deleteMutation = useDeleteOrder();
+  const cancelMutation = useCancelOrder();
 
   const filteredOrders = orders?.filter(order => {
     if (selectedStatus && order.status !== selectedStatus) {
@@ -42,19 +40,15 @@ const OrdersPage = () => {
     setIsModalOpen(false);
   };
 
-  const handleDelete = () => {
-    deleteMutation.mutate(selectedOrder._id);
+  const handleCancel = () => {
+    cancelMutation.mutate(selectedOrder._id);
     closeModal();
   };
 
-  const handleStatusChange = (id, status) => {
-    updateStatusMutation.mutate({ id, status });
-  };
-
   return (
-    <div className="orders-page">
+    <div className="orders-profile-page">
       <div className="flex-container">
-        <h5 className="manage-title">Manage shop orders</h5>
+        <h5 className="manage-title">Your orders</h5>
       </div>
 
       <OrdersStatisticPanel
@@ -79,11 +73,10 @@ const OrdersPage = () => {
       {!isLoading && !error && filteredOrders.length > 0 && (
         <div className="orders-manage-container">
           {filteredOrders.map(order => (
-            <OrderCardAdmin
+            <OrderCard
               key={order._id}
               order={order}
-              onStatusChange={handleStatusChange}
-              onDelete={openModal}
+              onCancel={openModal}
             />
           ))}
         </div>
@@ -91,23 +84,20 @@ const OrdersPage = () => {
 
       <ConfirmModal
         isOpen={isModalOpen}
-        onConfirm={handleDelete}
+        onConfirm={handleCancel}
         onCancel={closeModal}
-        message={`Are you sure you want to delete order #${selectedOrder?._id.slice(-8)}?`}
+        message={`Are you sure you want to cancel order #${selectedOrder?._id.slice(-8)}?`}
       />
 
-      {(updateStatusMutation.isError || deleteMutation.isError) && (
+      {cancelMutation.isError && (
         <div className="error-message">
-          Error: {updateStatusMutation.error?.response?.data?.message || 
-                  deleteMutation.error?.response?.data?.message || 
-                  updateStatusMutation.error?.response?.data?.error || 
-                  deleteMutation.error?.response?.data?.error || 
-                  updateStatusMutation.error?.message || 
-                  deleteMutation.error?.message}
+          Error: {cancelMutation.error?.response?.data?.message ||
+                  cancelMutation.error?.response?.data?.error ||
+                  cancelMutation.error?.message}
         </div>
       )}
     </div>
   );
-};
+}
 
-export default OrdersPage;
+export default OrdersProfilePage;
