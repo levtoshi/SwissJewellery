@@ -163,6 +163,61 @@ export const updateOrderStatus = async (req, res, next) => {
   }
 };
 
+// PATCH /api/orders/:id/cancel
+export const cancelOrder = async (req, res, next) => {
+  try {
+    const order = await Order.findById(req.params.id).populate('items.product');
+
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    const isAdmin = req.user.role === 'admin';
+    const isOwner =
+      order.user &&
+      order.user.toString() === req.user._id.toString();
+
+    // Access control
+    if (!isAdmin && !isOwner) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    // Already cancelled
+    if (order.status === 'cancelled') {
+      return res.status(400).json({ error: 'Order already cancelled' });
+    }
+
+    // Allowed statuses for cancel
+    const cancellableStatuses = ['new', 'confirmed'];
+
+    if (!cancellableStatuses.includes(order.status) && !isAdmin) {
+      return res.status(400).json({
+        error: 'Order cannot be cancelled at this stage'
+      });
+    }
+
+    // Return products to stock
+    for (const item of order.items) {
+      await Product.findByIdAndUpdate(
+        item.product._id,
+        { $inc: { stock: item.quantity } }
+      );
+    }
+
+    order.status = 'cancelled';
+    await order.save();
+
+    await order.populate('items.product');
+
+    res.json({
+      message: 'Order cancelled successfully',
+      order
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // DELETE /api/orders/:id - Soft delete (Admin)
 export const deleteOrder = async (req, res, next) => {
   try {
@@ -191,5 +246,6 @@ export default {
   getOrders,
   getOrderById,
   updateOrderStatus,
+  cancelOrder,
   deleteOrder
 };

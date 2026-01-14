@@ -1,0 +1,186 @@
+@use "../../styles/variables" as *;
+
+.order-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin-bottom: 18px;
+  border: 1px solid #eceff3;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed #e5e7eb;
+    margin-bottom: 18px;
+
+    .order-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .order-number {
+        font-size: 18px;
+        font-weight: 600;
+        color: $bg-color;
+        margin: 0;
+        letter-spacing: 0.3px;
+      }
+
+      .order-date {
+        font-size: 13px;
+        color: $gray-text-color;
+      }
+    }
+
+    .settings-container {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+
+      .status {
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba($golden-color, 0.1);
+        font-size: 13px;
+        font-weight: 500;
+        color: $golden-color;
+      }
+
+      .btn-cancel {
+        padding: 8px 18px;
+        border-radius: 999px;
+        border: 1px solid color-mix(in srgb, $error-color, transparent 70%);
+        background: transparent;
+        font-size: 13px;
+        font-weight: 500;
+        color: $error-color;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: color-mix(in srgb, $error-color, transparent 88%);
+        }
+      }
+    }
+  }
+
+  .card-content {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 18px;
+
+    .client-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 14px;
+      color: $bg-color;
+
+      strong {
+        color: $gray-text-color;
+        font-weight: 500;
+      }
+    }
+
+    .order-total {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: 16px;
+      font-weight: 600;
+      color: $bg-color;
+      white-space: nowrap;
+
+      strong {
+        margin-right: 6px;
+        color: $gray-text-color;
+        font-weight: 500;
+      }
+    }
+
+    .order-items {
+      grid-column: 1 / -1;
+
+      strong {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        color: $gray-text-color;
+      }
+
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 14px;
+        border-radius: 10px;
+        background: #f9fafb;
+        border: 1px solid #eef0f4;
+
+        li {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 6px 0;
+          font-size: 14px;
+          color: $bg-color;
+
+          &:not(:last-child) {
+            border-bottom: 1px solid #eceff3;
+          }
+        }
+      }
+    }
+
+    .order-comment {
+      grid-column: 1 / -1;
+      background: #fff7ed;
+      border: 1px solid $milk-color;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+
+      strong {
+        display: block;
+        margin-bottom: 4px;
+        font-weight: 600;
+        color: $error-color;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .order-admin-card {
+    padding: 16px;
+
+    .card-header {
+      flex-direction: column;
+      align-items: stretch;
+
+      .settings-container {
+        justify-content: space-between;
+      }
+    }
+
+    .card-content {
+      grid-template-columns: 1fr;
+
+      .order-total {
+        justify-content: flex-start;
+      }
+    }
+  }
+}

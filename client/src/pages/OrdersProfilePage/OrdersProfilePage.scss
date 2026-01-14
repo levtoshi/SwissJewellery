@@ -1,7 +1,10 @@
-@use "../../../styles/variables" as *;
+@use "../../styles/variables" as *;
 
-.orders-page {
+.orders-profile-page {
   min-height: 100vh;
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
 
   .flex-container {
     display: flex;

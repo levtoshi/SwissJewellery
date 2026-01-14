@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import { validateCheckout } from "../../utils/validateCheckout";
-import { ordersAPI } from "../../api/orders";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import "./CheckoutPage.scss";
+import useCreateOrder from "../../hooks/orders/useCreateOrder";
 
 const CheckoutPage = () => {
-    const { items, total, clearCart } = useCart();
+    const { items, total } = useCart();
     const { user, isAuthenticated } = useAuth();
     const navigate = useNavigate();
+    const addMutation = useCreateOrder();
 
     const [form, setForm] = useState({
         fullName: user?.fullName || "",
@@ -21,50 +21,6 @@ const CheckoutPage = () => {
         comment: ""
     });
     const [errors, setErrors] = useState({});
-
-    const queryClient = useQueryClient();
-
-    const mutation = useMutation({
-        mutationFn: async (data) => await ordersAPI.create(data),
-
-        onMutate: async (data) => {
-            await queryClient.cancelQueries({ queryKey: ['orders'] });
-
-            const previousOrders = queryClient.getQueryData(['orders']) ?? [];
-
-            const tempId = `temp-${Date.now()}`;
-
-            queryClient.setQueryData(['orders'], (old = []) => [
-                ...old,
-                { _id: tempId, ...data }
-            ]);
-
-            return { previousOrders };
-        },
-
-        onSuccess: (createdOrder) => {
-            queryClient.setQueryData(['orders'], (old = []) =>
-                old.map(order =>
-                    order._id.startsWith('temp-')
-                    ? createdOrder
-                    : order
-                )
-            );
-            queryClient.invalidateQueries({ queryKey: ['orders'] });
-            queryClient.invalidateQueries({queryKey: ["product"], exact: false});
-            queryClient.invalidateQueries({queryKey: ["products"], exact: false});
-
-            toast.success("Order placed successfully!");
-            clearCart();
-            navigate("/");
-        },
-
-        onError: (error, context) => {
-            queryClient.setQueryData(['orders'], context.previousOrders);
-            toast.error(error.response?.data?.message || error.response?.data?.error || error.message);
-        }
-    });
-
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -120,7 +76,7 @@ const CheckoutPage = () => {
             }
         };
 
-        mutation.mutate(orderData);
+        addMutation.mutate(orderData);
     };
 
     if (items.length === 0) {
@@ -216,13 +172,13 @@ const CheckoutPage = () => {
                             {errors.comment && <p className="error-text">{errors.comment}</p>}
                         </div>
 
-                        <button type="submit" className="btn-primary" disabled={mutation.isPending}>
-                            {mutation.isPending ? "Placing Order..." : "Place Order"}
+                        <button type="submit" className="btn-primary" disabled={addMutation.isPending}>
+                            {addMutation.isPending ? "Placing Order..." : "Place Order"}
                         </button>
 
-                        {mutation.isError && (
+                        {addMutation.isError && (
                             <div className="error-message">
-                                Error: {mutation.error.response?.data?.message || mutation.error.response?.data?.error || mutation.error.message}
+                                Error: {addMutation.error.response?.data?.message || addMutation.error.response?.data?.error || addMutation.error.message}
                             </div>
                         )}
                     </form>

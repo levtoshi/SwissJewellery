@@ -107,6 +107,24 @@
                 color: $gray-text-color;
             }
         }
+        
+        .link
+        {
+            display: flex;
+            justify-content: center;
+            background: linear-gradient(135deg, $blue-color, $golden-color);
+            border-radius: $border-radius;
+            
+            padding: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: $milk-color;
+
+            &:hover {
+                opacity: 0.9;
+            }
+        }
     }
   }
 }

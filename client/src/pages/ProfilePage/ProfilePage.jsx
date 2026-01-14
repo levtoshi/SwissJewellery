@@ -1,6 +1,7 @@
 import "./ProfilePage.scss";
 import { CircleUser, Mail, Shield, User } from "lucide-react";
 import { useAuth } from '../../context/AuthContext';
+import { Link } from "react-router-dom";
 
 const ProfilePage = () => {
   const { user } = useAuth();
@@ -65,6 +66,12 @@ const ProfilePage = () => {
                     "You have admin rights"}</p>
             </div>
           </div>
+        </section>
+
+        <section className="section">
+          <h2 className="section-title">Settings</h2>
+
+          <Link to="/orders" className="link">View orders</Link>
         </section>
       </div>
     </div>
