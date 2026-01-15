@@ -66,7 +66,6 @@ const CheckoutPage = () => {
                 quantity: item.quantity,
                 price: item.price
             })),
-            total,
             comment: form.comment,
             guestInfo: {
                 fullName: form.fullName,

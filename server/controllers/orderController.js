@@ -5,8 +5,9 @@ import Product from '../models/Product.js';
 // POST /api/orders
 export const createOrder = async (req, res, next) => {
   try {
-    const { items, total, guestInfo, comment } = req.body;
+    const { items, guestInfo, comment } = req.body;
     const userId = req.user?._id || null;
+    let total = 0;
 
     if (!items || items.length === 0) {
       return res.status(400).json({ error: 'Cart is empty' });
@@ -26,6 +27,7 @@ export const createOrder = async (req, res, next) => {
       if (product.stock < item.quantity) {
         return res.status(400).json({ error: `Insufficient stock for ${product.name}` });
       }
+      total += (product.price * item.quantity);
     }
 
     const orderData = {

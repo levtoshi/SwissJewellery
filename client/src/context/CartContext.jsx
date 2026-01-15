@@ -121,7 +121,6 @@ export const CartProvider = ({ children }) => {
     const currentQuantity = itemState?.quantity || 0;
     
     if (currentQuantity >= item.stock) {
-     toast.error("Max stock!");
      return;
     }
 
@@ -150,7 +149,6 @@ export const CartProvider = ({ children }) => {
     const item = state.items.find(i => i._id === id);
     
     if (quantity > item.stock) {
-      toast.error("Max stock!");
       return;
     }
 

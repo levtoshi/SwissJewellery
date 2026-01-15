@@ -1,6 +1,6 @@
 import React from "react";
 import "./ProductCardAdmin.scss";
-import { Pencil, Trash2 } from "lucide-react";
+import { Heart, Pencil, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom"
 
 const ProductCardAdmin = ({ product, onDelete }) => {
@@ -30,6 +30,18 @@ const ProductCardAdmin = ({ product, onDelete }) => {
           </div>
 
           <span className="stock">Amount: {product.stock}</span>
+
+          {product.favoritesCount > 0 &&
+              <span className="favorites-count">
+                <Heart
+                  color={"red"}
+                  fill={"red"}
+                  size={12}
+                  className="heart"
+                />
+                {product.favoritesCount}
+              </span>
+            }
         </div>
       </div>
 

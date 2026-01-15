@@ -74,23 +74,39 @@
         line-height: 1.4;
     }
 
-    .price-container {
+    .flex-container
+    {
         display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        margin-bottom: 15px;
+        justify-content: space-between;
 
-        .price {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: $blue-color;
+        .price-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+
+            .price {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: $blue-color;
+            }
+
+            .old-price {
+                font-size: 0.9rem;
+                font-weight: 600;
+                color: $gray-text-color;
+                text-decoration: line-through;
+            }
         }
 
-        .old-price {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: $gray-text-color;
-            text-decoration: line-through;
+        .heart
+        {
+            margin-right: 10px;
+
+            &:hover
+            {
+                fill: red;
+            }
         }
     }
 

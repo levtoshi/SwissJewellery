@@ -39,7 +39,13 @@ const UserSchema = new mongoose.Schema(
     refreshToken: {
       type: String,
       default: null
+    },
+    favorites: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product'
     }
+  ]
   },
   {
     timestamps: true

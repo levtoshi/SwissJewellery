@@ -5,6 +5,8 @@ import OrderCard from "../../components/OrderCard/OrderCard";
 import OrdersStatisticPanel from "../../components/OrdersStatisticPanel/OrdersStatisticPanel";
 import Loader from '../../components/Loader/Loader';
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react"; 
 import "./OrdersProfilePage.scss";
 
 const OrdersProfilePage = () => {
@@ -47,6 +49,11 @@ const OrdersProfilePage = () => {
 
   return (
     <div className="orders-profile-page">
+      <Link to="/profile" className="back-link">
+        <ArrowLeft size={16}/>
+        <p className="back-title">Back to profile</p>
+      </Link>
+
       <div className="flex-container">
         <h5 className="manage-title">Your orders</h5>
       </div>

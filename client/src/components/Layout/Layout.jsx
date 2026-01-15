@@ -8,7 +8,7 @@ import './Layout.scss';
 
 function Layout() {
   const { isAuthenticated, user, logout } = useAuth();
-  const { toggleCart } = useCart();
+  const { toggleCart, itemCount } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const activeClass = ({ isActive }) => isActive ? 'nav-link active' : 'nav-btn';
@@ -24,9 +24,11 @@ function Layout() {
               <Package size={20}/> Catalog
             </NavLink>
             
-            <button onClick={toggleCart} className="nav-btn">
+            <button onClick={toggleCart} className="nav-btn cart-btn">
               <ShoppingCart size={20} /> Cart
+              {itemCount > 0 && <span className="cart-badge">{itemCount}</span>}
             </button>
+
             
             {isAuthenticated ? (
               <>
