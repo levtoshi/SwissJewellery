@@ -1,6 +1,8 @@
 import ProductCard from "../../components/ProductCard/ProductCard";
 import useFavorites from '../../hooks/favorites/useFavorites';
 import Loader from "../../components/Loader/Loader";
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import "./FavoritesProfilePage.scss";
 
 const FavoritesProfilePage = () => {
@@ -9,6 +11,11 @@ const FavoritesProfilePage = () => {
 
   return (
     <div className='favorites-page'>
+      <Link to="/profile" className="back-link">
+        <ArrowLeft size={16}/>
+        <p className="back-title">Back to profile</p>
+      </Link>
+
       <h1 className="page-title">Favorites catalog</h1>
       <p className="products-amount">Found products: <strong>{favorites?.length || 0}</strong></p>
 

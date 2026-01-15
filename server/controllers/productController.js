@@ -38,18 +38,17 @@ export const getProducts = async (req, res, next) => {
 
     let sortOption = {};
     switch (sort) {
-      case 'price': sortOption = { price: 1 }; break;
-      case '-price': sortOption = { price: -1 }; break;
-      case 'name': sortOption = { name: 1 }; break;
-      case '-name': sortOption = { name: -1 }; break;
-      case 'createdAt': sortOption = { createdAt: 1 }; break;
+      case 'price': sortOption = { price: 1, _id: 1 }; break;
+      case '-price': sortOption = { price: -1, _id: 1 }; break;
+      case 'name': sortOption = { name: 1, _id: 1 }; break;
+      case '-name': sortOption = { name: -1, _id: 1 }; break;
+      case 'createdAt': sortOption = { createdAt: 1, _id: 1 }; break;
       case '-createdAt':
-      default: sortOption = { createdAt: -1 };
+      default: sortOption = { createdAt: -1, _id: 1 };
     }
 
     const skip = (page - 1) * limit;
 
-    // Get products
     const products = await Product.find(filter)
       .populate('category', 'name')
       .sort(sortOption)
@@ -59,7 +58,6 @@ export const getProducts = async (req, res, next) => {
     const total = await Product.countDocuments(filter);
     const hasMore = skip + products.length < total;
 
-    // Current user favorite
     let favoritesSet = new Set();
     const isAdmin = req.user?.role === 'admin';
 
@@ -68,7 +66,6 @@ export const getProducts = async (req, res, next) => {
       favoritesSet = new Set(user.favorites.map(f => f.toString()));
     }
 
-    // Для адміна одразу отримуємо counts всіх продуктів у цьому списку
     let favoritesCountsMap = {};
     if (isAdmin) {
       const productIds = products.map(p => p._id);
@@ -103,6 +100,7 @@ export const getProducts = async (req, res, next) => {
     next(error);
   }
 };
+
 
 // GET /api/products/:id
 export const getProductById = async (req, res, next) => {
