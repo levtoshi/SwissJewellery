@@ -39,4 +39,27 @@
     color: #fff;
     font-size: 0.9rem;
   }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: $border-radius;
+    background-color: $blue-color;
+    border: 2px solid $blue-color;
+    color: #fff;
+    
+    gap: 6px;
+    margin-bottom: 30px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+
+    &:hover
+    {
+        background-color: #fff;
+        color: $gray-text-color;
+        border: 2px solid $gray-text-color;
+    }
+  }
 }

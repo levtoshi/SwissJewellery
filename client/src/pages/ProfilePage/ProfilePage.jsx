@@ -72,6 +72,7 @@ const ProfilePage = () => {
           <h2 className="section-title">Settings</h2>
 
           <Link to="/orders" className="link">View orders</Link>
+          <Link to="/favorites" className="link">View favorites</Link>
         </section>
       </div>
     </div>

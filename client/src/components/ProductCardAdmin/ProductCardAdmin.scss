@@ -105,6 +105,20 @@
         border-radius: 4px;
         font-weight: 500;
     }
+
+    .favorites-count
+    {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      font-size: 12px;
+      padding: 4px 10px;
+      background: color-mix(in srgb, $error-color, transparent 90%);
+      color: $error-color;
+      border-radius: 4px;
+      font-weight: 500;
+    }
   }
 
   .card-actions {

@@ -15,6 +15,7 @@ import NotFound from '../pages/NotFound/NotFound';
 import ProductForm from '../pages/admin/ProductForm/ProductForm';
 import CategoryForm from "../pages/admin/CategoryForm/CategoryForm";
 import OrdersProfilePage from '../pages/OrdersProfilePage/OrdersProfilePage';
+import FavoritesProfilePage from "../pages/FavoritesProfilePage/FavoritesProfilePage";
 
 function ProtectedRoute({ children, adminOnly = false }) {
   const { isAuthenticated, user, loading } = useAuth();
@@ -52,6 +53,12 @@ function AppRouter() {
         <Route path="orders" element={
           <ProtectedRoute>
             <OrdersProfilePage />
+          </ProtectedRoute>
+        } />
+
+        <Route path="favorites" element={
+          <ProtectedRoute>
+            <FavoritesProfilePage/>
           </ProtectedRoute>
         } />
         

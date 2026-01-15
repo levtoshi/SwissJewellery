@@ -5,6 +5,7 @@ import * as categoryController from '../controllers/categoryController.js';
 import * as productController from '../controllers/productController.js';
 import * as orderController from '../controllers/orderController.js';
 import * as cartController from '../controllers/cartController.js';
+import * as favoriteController from '../controllers/favoritesController.js';
 
 const router = express.Router();
 
@@ -23,8 +24,8 @@ router.patch('/categories/:id', protect, adminOnly, categoryController.updateCat
 router.delete('/categories/:id', protect, adminOnly, categoryController.deleteCategory);
 
 // PRODUCTS
-router.get('/products', productController.getProducts);
-router.get('/products/:id', productController.getProductById);
+router.get('/products', optionalAuth, productController.getProducts);
+router.get('/products/:id', optionalAuth, productController.getProductById);
 router.post('/products', protect, adminOnly, productController.createProduct);
 router.patch('/products/:id', protect, adminOnly, productController.updateProduct);
 router.delete('/products/:id', protect, adminOnly, productController.deleteProduct);
@@ -44,5 +45,10 @@ router.patch('/cart/items/:productId', protect, cartController.updateCartItem);
 router.delete('/cart/items/:productId', protect, cartController.removeFromCart);
 router.delete('/cart', protect, cartController.clearCart);
 router.post('/cart/sync', protect, cartController.syncCart);
+
+// FAVORITES
+router.get('/favorites', protect, favoriteController.getFavorites);
+router.post('/favorites/:productId', protect, favoriteController.addFavorite);
+router.delete('/favorites/:productId', protect, favoriteController.removeFavorite);
 
 export default router;

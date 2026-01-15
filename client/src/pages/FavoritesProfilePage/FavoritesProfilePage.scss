@@ -1,0 +1,40 @@
+@use "../../styles/variables" as *;
+
+.favorites-page
+{
+    padding: 40px 60px;
+    background: #f7f8fa;
+    min-height: 100vh;
+
+    .page-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: $bg-color;
+        margin-bottom: 8px;
+    }
+    .products-amount {
+        font-size: 0.95rem;
+        color: $gray-text-color;
+        margin-bottom: 24px;
+
+        strong {
+        color: $blue-color;
+        font-weight: 700;
+        }
+    }
+
+    .products-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 28px;
+    }
+
+    .product-error
+    {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 10px;
+        color: $error-color;
+    }
+}

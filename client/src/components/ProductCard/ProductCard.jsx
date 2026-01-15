@@ -1,21 +1,30 @@
 import { ShoppingCart, CircleAlert } from "lucide-react";
 import "./ProductCard.scss";
-import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
+import useToggleFavorite from "../../hooks/favorites/useToggleFavorite";
+import { Heart } from "lucide-react";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product = {} }) => {
   const hasDiscount = product.discount > 0;
 
   const savingPrice = (product?.price - product?.finalPrice);
   const navigate = useNavigate();
 
   const { addItem } = useCart();
+  
+  const { isActive, toggle } = useToggleFavorite(product._id, product.isFavorite);
 
   const handleAddToCart = (e) =>
   {
     e.stopPropagation();
     addItem(product);
+  }
+
+  const handleToggle = (e) =>
+  {
+    e.stopPropagation();
+    toggle();
   }
 
   return (
@@ -49,15 +58,25 @@ const ProductCard = ({ product }) => {
           {product.description.length > 90 && "..."}
         </p>
 
-        <div className="price-container">
-          <span className="price">${product.finalPrice}</span>
+        <div className="flex-container">
+          <div className="price-container">
+            <span className="price">${product.finalPrice}</span>
 
-          {hasDiscount && (
-            <span className="old-price">
-              ${product.price}
-            </span>
-          )}
+            {hasDiscount && (
+              <span className="old-price">
+                ${product.price}
+              </span>
+            )}
+          </div>
+          <Heart
+            onClick={handleToggle}
+            color={isActive ? "red" : "gray"}
+            fill={isActive ? "red" : "none"}
+            size={24}
+            className="heart"
+          />
         </div>
+        
 
         {savingPrice > 0 &&
           <p className="saving-info">

@@ -47,6 +47,11 @@
     .section {
         margin-bottom: 2.5rem;
 
+        &:last-child
+        {
+            margin-bottom: 0;
+        }
+
         .section-title {
             font-size: 1.1rem;
             font-weight: 600;
@@ -115,6 +120,7 @@
             background: linear-gradient(135deg, $blue-color, $golden-color);
             border-radius: $border-radius;
             
+            margin-bottom: 1rem;
             padding: 15px;
             font-size: 1rem;
             font-weight: 600;
