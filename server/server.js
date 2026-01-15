@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import router from './routes/router.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
+import cookieParser from 'cookie-parser';
 
 // .env
 dotenv.config();
@@ -35,6 +36,7 @@ app.use(cors({
 }));
 
 // Middleware
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

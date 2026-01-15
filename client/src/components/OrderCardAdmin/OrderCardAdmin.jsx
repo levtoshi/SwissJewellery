@@ -64,7 +64,7 @@ const OrderCardAdmin = ({ order, onStatusChange, onDelete }) => {
           <ul>
             {order.items.map((item, index) => (
               <li key={index}>
-                {item.product.name} (x{item.quantity}) - ${item.product.finalPrice * item.quantity}
+                {item.product?.name} (x{item.quantity}) - ${item.product?.finalPrice * item.quantity}
               </li>
             ))}
           </ul>

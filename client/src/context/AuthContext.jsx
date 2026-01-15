@@ -1,48 +1,46 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext } from 'react';
 import { authAPI } from '../api/auth';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    const savedUser = localStorage.getItem('user');
-    if (token && savedUser) setUser(JSON.parse(savedUser));
-    setLoading(false);
-  }, []);
+  const { data: user, isLoading } = useQuery({
+    queryKey: ['me'],
+    queryFn: async () => await authAPI.getMe()
+  });
 
   const login = async (credentials) => {
-    const { data } = await authAPI.login(credentials);
+    const data = await authAPI.login(credentials);
     localStorage.setItem('accessToken', data.accessToken);
-    localStorage.setItem('refreshToken', data.refreshToken);
-    localStorage.setItem('user', JSON.stringify(data.user));
-    setUser(data.user);
-    return data;
+    queryClient.refetchQueries({ queryKey: ['me'] });
   };
 
   const register = async (userData) => {
-    const { data } = await authAPI.register(userData);
+    const data = await authAPI.register(userData);
     localStorage.setItem('accessToken', data.accessToken);
-    localStorage.setItem('refreshToken', data.refreshToken);
-    localStorage.setItem('user', JSON.stringify(data.user));
-    setUser(data.user);
-    return data;
+    queryClient.refetchQueries({ queryKey: ['me'] });
   };
 
   const logout = async () => {
-    try {
-      await authAPI.logout();
-    } finally {
-      localStorage.clear();
-      setUser(null);
-    }
+    await authAPI.logout();
+    localStorage.removeItem('accessToken');
+    queryClient.setQueryData(['me'], null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading, isAuthenticated: !!user }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        register,
+        logout,
+        loading: isLoading,
+        isAuthenticated: !!user,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

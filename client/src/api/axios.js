@@ -9,28 +9,29 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('accessToken');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
   return config;
 });
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => response.data,
   async (error) => {
-    const originalRequest = error.config;
-    if (error.response?.status === 401 && !originalRequest._retry && !originalRequest.url.includes('/auth/login') && !originalRequest.url.includes('/auth/register')) {
-      originalRequest._retry = true;
-      try {
-        const refreshToken = localStorage.getItem('refreshToken');
-        const { data } = await axios.post(`${API_URL}/api/auth/refresh`, { refreshToken });
-        localStorage.setItem('accessToken', data.accessToken);
-        localStorage.setItem('refreshToken', data.refreshToken);
-        originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
-        return api(originalRequest);
-      } catch {
-        localStorage.clear();
-        window.location.href = '/login';
-      }
+    if (error.response?.status === 401 && !error.config._retry) {
+      error.config._retry = true;
+
+      const data = await axios.post(`${API_URL}/api/auth/refresh`);
+
+      localStorage.setItem('accessToken', data.accessToken);
+
+      error.config.headers.Authorization = `Bearer ${data.accessToken}`;
+
+      return api(error.config);
     }
+
     return Promise.reject(error);
   }
 );

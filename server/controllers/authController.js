@@ -13,7 +13,6 @@ import {
 export const register = async (req, res, next) => {
   try {
     const { email, password, fullName, phone, address } = req.body;
-    console.log(req.body);
 
     // Validation
     if (!email || !password || !fullName) {
@@ -42,14 +41,17 @@ export const register = async (req, res, next) => {
     const accessToken = generateAccessToken(user._id);
     const refreshToken = generateRefreshToken(user._id);
 
-    // Saving refresh token into DB
-    user.refreshToken = refreshToken;
-    await user.save();
+    // Saving refresh token into cookies
+    res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax',
+        maxAge: 7 * 24 * 60 * 60 * 1000
+    });
 
     res.status(201).json({
       user: user.toJSON(),
-      accessToken,
-      refreshToken
+      accessToken
     });
   } catch (error) {
     next(error);
@@ -86,14 +88,17 @@ export const login = async (req, res, next) => {
     const accessToken = generateAccessToken(user._id);
     const refreshToken = generateRefreshToken(user._id);
 
-    // Saving refresh token into DB
-    user.refreshToken = refreshToken;
-    await user.save();
+    // Saving refresh token into cookies
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
 
     res.json({
       user: user.toJSON(),
-      accessToken,
-      refreshToken
+      accessToken
     });
   } catch (error) {
     next(error);
@@ -107,7 +112,7 @@ export const login = async (req, res, next) => {
  */
 export const refresh = async (req, res, next) => {
   try {
-    const { refreshToken } = req.body;
+    const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
       return res.status(400).json({ error: 'Refresh token is required' });
@@ -129,13 +134,16 @@ export const refresh = async (req, res, next) => {
     const newAccessToken = generateAccessToken(user._id);
     const newRefreshToken = generateRefreshToken(user._id);
 
-    // Update refresh token into DB
-    user.refreshToken = newRefreshToken;
-    await user.save();
+    // Saving refresh token into cookies
+    res.cookie('refreshToken', newRefreshToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
 
     res.json({
-      accessToken: newAccessToken,
-      refreshToken: newRefreshToken
+      accessToken: newAccessToken
     });
   } catch (error) {
     next(error);
@@ -149,11 +157,11 @@ export const refresh = async (req, res, next) => {
  */
 export const logout = async (req, res, next) => {
   try {
-    const user = req.user;
-
-    // Delete refresh token from DB
-    user.refreshToken = null;
-    await user.save();
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',   
+    });
 
     res.json({ message: 'Successful logout' });
   } catch (error) {
