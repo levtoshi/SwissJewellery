@@ -41,6 +41,9 @@ export const register = async (req, res, next) => {
     const accessToken = generateAccessToken(user._id);
     const refreshToken = generateRefreshToken(user._id);
 
+    user.refreshToken = refreshToken;
+    await user.save();
+
     // Saving refresh token into cookies
     res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
@@ -88,6 +91,9 @@ export const login = async (req, res, next) => {
     const accessToken = generateAccessToken(user._id);
     const refreshToken = generateRefreshToken(user._id);
 
+    user.refreshToken = refreshToken;
+    await user.save();
+
     // Saving refresh token into cookies
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
@@ -118,23 +124,22 @@ export const refresh = async (req, res, next) => {
       return res.status(400).json({ error: 'Refresh token is required' });
     }
 
-    // Verification of refresh token
     const decoded = verifyRefreshToken(refreshToken);
     if (!decoded) {
       return res.status(401).json({ error: 'Invalid refresh token' });
     }
 
-    // Search for user and check if token is saved
     const user = await User.findById(decoded.id);
     if (!user || user.refreshToken !== refreshToken) {
       return res.status(401).json({ error: 'Invalid refresh token' });
     }
 
-    // Generation of new tokens
     const newAccessToken = generateAccessToken(user._id);
     const newRefreshToken = generateRefreshToken(user._id);
 
-    // Saving refresh token into cookies
+    user.refreshToken = newRefreshToken;
+    await user.save();
+
     res.cookie('refreshToken', newRefreshToken, {
       httpOnly: true,
       secure: false,
@@ -142,9 +147,7 @@ export const refresh = async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
-    res.json({
-      accessToken: newAccessToken
-    });
+    res.json({ accessToken: newAccessToken });
   } catch (error) {
     next(error);
   }
@@ -157,6 +160,8 @@ export const refresh = async (req, res, next) => {
  */
 export const logout = async (req, res, next) => {
   try {
+    await User.findByIdAndUpdate(req.user._id, { refreshToken: '' });
+
     res.clearCookie('refreshToken', {
       httpOnly: true,
       secure: false,

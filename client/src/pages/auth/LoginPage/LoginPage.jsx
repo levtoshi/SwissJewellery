@@ -59,7 +59,7 @@ const LoginPage = () => {
       });
       setErrors({});
     } catch (error) {
-      toast.error(error.response?.data?.error || 'Login error');
+      toast.error('Login error');
     }
   }
 
