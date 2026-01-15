@@ -7,19 +7,19 @@
 
   color: #0a1a2e;
 
-  .back-link {
+  .back-btn {
     display: inline-flex;
     align-items: center;
     padding: 10px;
     border-radius: $border-radius;
     background-color: $blue-color;
     border: 2px solid $blue-color;
+    cursor: pointer;
     color: #fff;
     
     gap: 6px;
     margin-bottom: 30px;
     font-weight: 600;
-    text-decoration: none;
     transition: all 0.2s;
 
     &:hover

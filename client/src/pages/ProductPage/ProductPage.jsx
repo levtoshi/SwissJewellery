@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 import { useQuery } from '@tanstack/react-query';
 import { useCart } from "../../context/CartContext";
 import { productsAPI } from "../../api/products";
@@ -9,6 +9,7 @@ import { ArrowLeft, Heart } from "lucide-react";
 import "./ProductPage.scss";
 
 const ProductPage = () => {
+  const navigate = useNavigate();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { id } = useParams();
 
@@ -43,12 +44,16 @@ const ProductPage = () => {
     );
   }
 
+  const goBack = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="product-container">
-      <Link to="/" className="back-link">
+      <button className="back-btn" onClick={goBack}>
         <ArrowLeft size={16}/>
-        <p className="back-title">Back to search</p>
-      </Link>
+        <p className="back-title">Go back</p>
+      </button>
 
       <div className="product-details-container">
         <div className="images-container">

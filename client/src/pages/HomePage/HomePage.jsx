@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useState, useRef, useEffect } from "react";
 import useDebounce from "../../hooks/useDebounce.js";
