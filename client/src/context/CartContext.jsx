@@ -121,8 +121,8 @@ export const CartProvider = ({ children }) => {
     const currentQuantity = itemState?.quantity || 0;
     
     if (currentQuantity >= item.stock) {
-      toast.error("Max stock!");
-      return;
+     toast.error("Max stock!");
+     return;
     }
 
     dispatch({type: ADD_ITEM, payload: item});

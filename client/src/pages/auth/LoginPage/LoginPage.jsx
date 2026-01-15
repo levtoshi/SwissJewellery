@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import { LogIn } from "lucide-react"
 import "./LoginPage.scss"
 
-const LoginPage = ({onLogin}) => {
+const LoginPage = () => {
 
   const [form, setForm] = useState({
     email: "",
