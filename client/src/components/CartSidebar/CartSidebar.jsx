@@ -130,6 +130,7 @@ const CartSidebar = () => {
                 onConfirm={confirmAction}
                 onCancel={closeModal}
                 message={modalMessage}
+                confirmMessage="Yes, Clear"
             />
         </div>
     );

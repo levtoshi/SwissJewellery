@@ -14,7 +14,7 @@ const OrdersPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  const { orders, isLoading, error } = useOrders();
+  const { orders, isLoading, error } = useOrders(selectedStatus, true);
   const updateStatusMutation = useUpdateOrderStatus();
   const deleteMutation = useDeleteOrder();
 
@@ -94,6 +94,7 @@ const OrdersPage = () => {
         onConfirm={handleDelete}
         onCancel={closeModal}
         message={`Are you sure you want to delete order #${selectedOrder?._id.slice(-8)}?`}
+        confirmMessage="Yes, Delete"
       />
 
       {(updateStatusMutation.isError || deleteMutation.isError) && (

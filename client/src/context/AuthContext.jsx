@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('accessToken', data.accessToken);
     queryClient.refetchQueries({ queryKey: ['me'] });
     setToken(data.accessToken);
+    queryClient.invalidateQueries({ queryKey: ['me'] });
   };
 
   const register = async (userData) => {
@@ -29,13 +30,20 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('accessToken', data.accessToken);
     queryClient.refetchQueries({ queryKey: ['me'] });
     setToken(data.accessToken);
+    queryClient.invalidateQueries({ queryKey: ['me'] });
   };
 
   const logout = async () => {
-    await authAPI.logout();
-    localStorage.removeItem('accessToken');
-    queryClient.setQueryData(['me'], null);
-    setToken(null);
+    try
+    {
+      await authAPI.logout();
+    }
+    finally
+    {
+      localStorage.removeItem('accessToken');
+      setToken(null);
+      queryClient.clear();
+    }
   };
 
   return (
@@ -46,7 +54,7 @@ export const AuthProvider = ({ children }) => {
         register,
         logout,
         loading: isLoading,
-        isAuthenticated: !!user,
+        isAuthenticated: !!token && !!user && !isLoading,
       }}
     >
       {children}

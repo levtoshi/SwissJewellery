@@ -2,32 +2,39 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ordersAPI } from "../../api/orders";
 import toast from "react-hot-toast";
 
-const useDeleteOrder = () =>
-{
+const useDeleteOrder = () => {
   const queryClient = useQueryClient();
 
-  const deleteMutation = useMutation({
-    mutationFn: async (id) => await ordersAPI.delete(id),
+  return useMutation({
+    mutationFn: ordersAPI.delete,
+
     onMutate: async (id) => {
-      await queryClient.cancelQueries({ queryKey: ['orders'] });
-      const previousOrders = queryClient.getQueryData(['orders']);
-      queryClient.setQueryData(['orders'], (old) => old.filter(c => c._id !== id));
-      return { previousOrders };
+      await queryClient.cancelQueries({ queryKey: ['orders'], exact: false });
+
+      const ordersArr = queryClient.getQueriesData({ queryKey: ['orders'] });
+
+      ordersArr.forEach(([key, old = []]) => {
+        queryClient.setQueryData(
+          key,
+          old.filter(o => o._id !== id)
+        );
+      });
+
+      return { ordersArr };
     },
+
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
-      queryClient.invalidateQueries({ queryKey: ['product'] });
-      queryClient.invalidateQueries({ queryKey: ['products'] });
-      toast.success('Order soft deleted!');
+      queryClient.invalidateQueries({ queryKey: ['orders'], exact: false });
+      toast.success("Order deleted");
     },
-    onError: (error, context) => {
-      queryClient.setQueryData(['orders'], context.previousCategories);
-      const errorMessage = error.response?.data?.message || error.response?.data?.error || error.message;
-      toast.error(errorMessage);
+
+    onError: (err, context) => {
+      context.ordersArr.forEach(([key, data]) =>
+        queryClient.setQueryData(key, data)
+      );
+      toast.error(err.response?.data?.error || err.message);
     }
   });
-
-  return deleteMutation;
-}
+};
 
 export default useDeleteOrder;

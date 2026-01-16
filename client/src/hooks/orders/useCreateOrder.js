@@ -4,54 +4,55 @@ import { useNavigate } from "react-router-dom";
 import { ordersAPI } from "../../api/orders";
 import toast from "react-hot-toast";
 
-const useCreateOrder = () =>
-{
-    const queryClient = useQueryClient();
-    const navigate = useNavigate();
-    const { clearCart } = useCart();
+const useCreateOrder = () => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const { clearCart } = useCart();
 
-    const mutation = useMutation({
-        mutationFn: async (data) => await ordersAPI.create(data),
+  return useMutation({
+    mutationFn: ordersAPI.create,
 
-        onMutate: async (data) => {
-            await queryClient.cancelQueries({ queryKey: ['orders'] });
+    onMutate: async (data) => {
+      await queryClient.cancelQueries({ queryKey: ['orders'], exact: false });
 
-            const previousOrders = queryClient.getQueryData(['orders']) ?? [];
+      const ordersArr = queryClient.getQueriesData({ queryKey: ['orders'] });
 
-            const tempId = `temp-${Date.now()}`;
+      const tempOrder = {
+        _id: `temp-${Date.now()}`,
+        ...data,
+        status: 'new',
+        createdAt: new Date().toISOString(),
+        optimistic: true
+      };
 
-            queryClient.setQueryData(['orders'], (old = []) => [
-                ...old,
-                { _id: tempId, ...data }
-            ]);
+      ordersArr.forEach(([key, old = []]) => {
+        queryClient.setQueryData(key, [...old, tempOrder]);
+      });
 
-            return { previousOrders };
-        },
+      return { ordersArr };
+    },
 
-        onSuccess: (createdOrder) => {
-            queryClient.setQueryData(['orders'], (old = []) =>
-                old.map(order =>
-                    order._id.startsWith('temp-')
-                    ? createdOrder
-                    : order
-                )
-            );
-            queryClient.invalidateQueries({ queryKey: ['orders'] });
-            queryClient.invalidateQueries({queryKey: ["product"], exact: false});
-            queryClient.invalidateQueries({queryKey: ["products"], exact: false});
+    onSuccess: (order) => {
+      queryClient.setQueriesData({ queryKey: ['orders'] }, (old = []) =>
+        old.map(o => o.optimistic ? order : o)
+      );
 
-            toast.success("Order placed successfully!");
-            clearCart();
-            navigate("/");
-        },
+      queryClient.invalidateQueries({ queryKey: ['orders'], exact: false });
+      queryClient.invalidateQueries({ queryKey: ['products'], exact: false });
 
-        onError: (error, context) => {
-            queryClient.setQueryData(['orders'], context.previousOrders);
-            toast.error(error.response?.data?.message || error.response?.data?.error || error.message);
-        }
-    });
+      toast.success("Order placed successfully!");
+      clearCart();
+      navigate("/");
+    },
 
-    return mutation;
+    onError: (err, context) => {
+      context.ordersArr.forEach(([key, data]) =>
+        queryClient.setQueryData(key, data)
+      );
+
+      toast.error(err.response?.data?.error || err.message);
+    }
+  });
 };
 
 export default useCreateOrder;

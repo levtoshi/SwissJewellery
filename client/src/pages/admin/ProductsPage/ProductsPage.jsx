@@ -184,6 +184,7 @@ const ProductsPage = () => {
         onConfirm={handleDelete}
         onCancel={closeModal}
         message={`Are you sure you want to delete "${selectedProduct?.name}"?`}
+        confirmMessage="Yes, Delete"
       />
 
       {(isFetchingNextPage || hasNextPage) && (
