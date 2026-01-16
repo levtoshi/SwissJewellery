@@ -2,29 +2,41 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ordersAPI } from "../../api/orders";
 import toast from "react-hot-toast";
 
-const useCancelOrder = () =>
-{
+const useCancelOrder = () => {
   const queryClient = useQueryClient();
 
-  const cancelMutation = useMutation({
-    mutationFn: async (id) => await ordersAPI.cancel(id),
+  return useMutation({
+    mutationFn: ordersAPI.cancel,
+
     onMutate: async (id) => {
-      await queryClient.cancelQueries({ queryKey: ['orders'] });
-      const previousOrders = queryClient.getQueryData(['orders']);
-      queryClient.setQueryData(['orders'], (old) => old.map(c => c._id === id ? { ...c, status: "canceled" } : c));
-      return { previousOrders };
+      await queryClient.cancelQueries({ queryKey: ['orders'], exact: false });
+
+      const ordersArr = queryClient.getQueriesData({ queryKey: ['orders'] });
+
+      ordersArr.forEach(([key, old = []]) => {
+        queryClient.setQueryData(
+          key,
+          old.map(o =>
+            o._id === id ? { ...o, status: 'cancelled' } : o
+          )
+        );
+      });
+
+      return { ordersArr };
     },
+
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
-      toast.success('Order canceled!');
+      queryClient.invalidateQueries({ queryKey: ['orders'], exact: false });
+      toast.success("Order cancelled");
     },
-    onError: (error, context) => {
-      queryClient.setQueryData(['orders'], context.previousCategories);
-      toast.error(error.response?.data?.message || error.response?.data?.error || error.message);
+
+    onError: (err, context) => {
+      context.ordersArr.forEach(([key, data]) =>
+        queryClient.setQueryData(key, data)
+      );
+      toast.error(err.response?.data?.error || err.message);
     }
   });
-
-  return cancelMutation;
-}
+};
 
 export default useCancelOrder;

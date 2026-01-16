@@ -15,7 +15,7 @@ const OrdersProfilePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  const { orders, isLoading, error } = useOrders();
+  const { orders, isLoading, error } = useOrders(selectedStatus, false);
   const cancelMutation = useCancelOrder();
 
   const filteredOrders = orders?.filter(order => {
@@ -94,6 +94,7 @@ const OrdersProfilePage = () => {
         onConfirm={handleCancel}
         onCancel={closeModal}
         message={`Are you sure you want to cancel order #${selectedOrder?._id.slice(-8)}?`}
+        confirmMessage="Yes, Cancel"
       />
 
       {cancelMutation.isError && (

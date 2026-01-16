@@ -70,17 +70,17 @@ export const createOrder = async (req, res, next) => {
 // GET /api/orders
 export const getOrders = async (req, res, next) => {
   try {
-    const { status } = req.query;
+    const { status, adminOnly } = req.query;
     const isAdmin = req.user.role === 'admin';
+    const adminOnlyBool = adminOnly === 'true'; 
 
     const filter = { deletedAt: null };
 
-    // Admin can see all, user - only his / her
-    if (!isAdmin) {
+    if (!isAdmin || !adminOnlyBool)
+    {
       filter.user = req.user._id;
     }
     
-    // Filter with status
     if (status) {
       filter.status = status;
     }

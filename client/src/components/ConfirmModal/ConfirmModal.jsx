@@ -1,7 +1,7 @@
 import { X, Check } from "lucide-react";
 import "./ConfirmModal.scss";
 
-const ConfirmModal = ({ isOpen, onConfirm, onCancel, message }) => {
+const ConfirmModal = ({ isOpen, onConfirm, onCancel, message, confirmMessage }) => {
   if (!isOpen)
     return null;
 
@@ -17,7 +17,7 @@ const ConfirmModal = ({ isOpen, onConfirm, onCancel, message }) => {
         <div className="modal-actions">
           <button className="btn-confirm" onClick={onConfirm}>
             <Check size={16} />
-            <span>Yes, Delete</span>
+            <span>{confirmMessage}</span>
           </button>
 
           <button className="btn-cancel" onClick={onCancel}>

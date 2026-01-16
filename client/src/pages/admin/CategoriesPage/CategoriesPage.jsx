@@ -96,6 +96,7 @@ const CategoriesPage = () => {
         onConfirm={handleDelete}
         onCancel={closeModal}
         message={`Are you sure you want to delete "${selectedCategory?.name}"?`}
+        confirmMessage="Yes, Delete"
       />
 
       {deleteMutation.isError && (

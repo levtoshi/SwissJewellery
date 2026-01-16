@@ -60,4 +60,30 @@
             border: 2px solid $gray-text-color;
         }
     }
+
+    @media (max-width: 1400px) {
+        .products-container {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (max-width: 1024px) {
+        padding: 30px;
+
+        .products-container {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 640px) {
+        padding: 20px;
+
+        .page-title {
+            font-size: 1.7rem;
+        }
+
+        .products-container {
+            grid-template-columns: 1fr;
+        }
+    }
 }
