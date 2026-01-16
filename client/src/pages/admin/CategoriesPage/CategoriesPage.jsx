@@ -27,7 +27,7 @@ const CategoriesPage = () => {
     onMutate: async (id) => {
       await queryClient.cancelQueries({ queryKey: ['categories'] });
       const previousCategories = queryClient.getQueryData(['categories']);
-      queryClient.setQueryData(['categories'], (old) => old.filter(c => c._id !== id));
+      //queryClient.setQueryData(['categories'], (old) => old.filter(c => c._id !== id));
       return { previousCategories };
     },
     onSuccess: () => {
