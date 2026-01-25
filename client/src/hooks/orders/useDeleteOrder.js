@@ -6,7 +6,7 @@ const useDeleteOrder = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ordersAPI.delete,
+    mutationFn: async (id) => await ordersAPI.delete(id),
 
     onMutate: async (id) => {
       await queryClient.cancelQueries({ queryKey: ['orders'], exact: false });
@@ -28,7 +28,7 @@ const useDeleteOrder = () => {
       toast.success("Order deleted");
     },
 
-    onError: (err, context) => {
+    onError: (err, id, context) => {
       context.ordersArr.forEach(([key, data]) =>
         queryClient.setQueryData(key, data)
       );

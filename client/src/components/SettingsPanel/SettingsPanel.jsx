@@ -1,18 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
-import { categoriesAPI } from '../../api/categories';
 import Loader from '../Loader/Loader';
+import useCategories from "../../hooks/categories/useCategories.js";
 import "./SettingsPanel.scss"
 
 const SettingsPanel = ({selectedCategory, setSelectedCategory,
     searchQuery, setSearchQuery,
     selectedSort, setSelectedSort
 }) => {
-  const { data: categories, isLoading: isLoadingCategories, error: errorCategories } = useQuery({
-    queryKey: ['categories'],
-    queryFn: async () => await categoriesAPI.getAll(),
-    staleTime: 3 * 60 * 1000,
-    cacheTime: 10 * 60 * 1000
-  });
+
+  const { categories, isLoading: isLoadingCategories, error: errorCategories } = useCategories();
 
   return (
     <div className='settings-container'>

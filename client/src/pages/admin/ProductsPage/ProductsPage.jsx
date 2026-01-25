@@ -1,11 +1,9 @@
-import { useQuery, useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useRef, useEffect } from "react";
 import useDebounce from "../../../hooks/useDebounce.js";
-import toast from "react-hot-toast";
+import useInfiniteProducts from "../../../hooks/products/useInfiniteProducts.js";
+import useDeleteProduct from "../../../hooks/products/useDeleteProduct.js";
 import { Plus } from "lucide-react"
-import { productsAPI } from "../../../api/products.js"
 import { NavLink } from "react-router-dom";
-
 import Loader from "../../../components/Loader/Loader.jsx";
 import ProductCardAdmin from "../../../components/ProductCardAdmin/ProductCardAdmin.jsx";
 import ConfirmModal from "../../../components/ConfirmModal/ConfirmModal.jsx";
@@ -16,68 +14,16 @@ const ProductsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSort, setSelectedSort] = useState("");
-  const debouncedQuery = useDebounce(searchQuery);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const LIMIT = 12;
-
-  const queryClient = useQueryClient();
 
   const observerTarget = useRef(null);
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    error,
-  } = useInfiniteQuery({
-    queryKey: ["products", selectedCategory, debouncedQuery, selectedSort],
-    queryFn: ({ pageParam = 1 }) => {
-      return productsAPI.getAll({
-        page: pageParam,
-        limit: LIMIT,
-        ...(selectedCategory && { category: selectedCategory }),
-        ...(debouncedQuery && { search: debouncedQuery }),
-        ...(selectedSort && { sort: selectedSort }),
-      });
-    },
-    getNextPageParam: (lastPage) => {
-      return lastPage.pagination.hasMore
-        ? lastPage.pagination.page + 1
-        : undefined;
-    },
-    staleTime: 3 * 60 * 1000,
-    cacheTime: 10 * 60 * 1000,
-  });
+  const debouncedQuery = useDebounce(searchQuery);
+  const { products, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, error } = useInfiniteProducts(selectedCategory, debouncedQuery, selectedSort);
 
-  const products = data?.pages.flatMap(page => page.products) ?? [];
-
-  const deleteMutation = useMutation({
-    mutationFn: (id) => productsAPI.delete(id),
-    onMutate: async (id) => {
-      await queryClient.cancelQueries({ queryKey: ['products'] });
-      const previousProducts = queryClient.getQueryData(['products', selectedCategory, debouncedQuery, selectedSort]);
-      queryClient.setQueryData(['products', selectedCategory, debouncedQuery, selectedSort], (old) => ({
-        ...old,
-        pages: old.pages.map(page => ({
-          ...page,
-          products: page.products.filter(p => p._id !== id)
-        }))
-      }));
-      return { previousProducts };
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'], exact: false });
-      toast.success('Product deleted!');
-    },
-    onError: (error, id, context) => {
-      queryClient.setQueryData(['products', selectedCategory, debouncedQuery, selectedSort], context.previousProducts);
-      toast.error(error.response?.data?.message || error.response?.data?.error || error.message);
-    }
-  });
+  const deleteMutation = useDeleteProduct(selectedCategory, debouncedQuery, selectedSort);
 
   const amountOfProducts = products?.length;
   const amountOfProductsInStock = products?.filter(product => product.stock > 0).length;

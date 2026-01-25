@@ -6,8 +6,7 @@ const useUpdateOrderStatus = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, status }) =>
-      ordersAPI.updateStatus(id, status),
+    mutationFn: async ({ id, status }) => await ordersAPI.updateStatus(id, status),
 
     onMutate: async ({ id, status }) => {
       await queryClient.cancelQueries({ queryKey: ['orders'], exact: false });
@@ -32,7 +31,7 @@ const useUpdateOrderStatus = () => {
       toast.success("Order status updated");
     },
 
-    onError: (err, context) => {
+    onError: (err, id, context) => {
       context.ordersArr.forEach(([key, data]) =>
         queryClient.setQueryData(key, data)
       );

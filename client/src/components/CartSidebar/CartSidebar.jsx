@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import "./CartSidebar.scss";
-import toast from "react-hot-toast";
 
 const CartSidebar = () => {
     const { items, total, removeItem, updateQuantity, clearCart, itemCount, isCartOpen, closeCart } = useCart();

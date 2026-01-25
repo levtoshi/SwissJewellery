@@ -1,50 +1,20 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { useState, useRef, useEffect } from "react";
 import useDebounce from "../../hooks/useDebounce.js";
-import { productsAPI } from "../../api/products.js"
+import useInfiniteProducts from "../../hooks/products/useInfiniteProducts.js";
 import Loader from "../../components/Loader/Loader.jsx";
 import ProductCard from "../../components/ProductCard/ProductCard.jsx";
-import "./HomePage.scss"
 import SettingsPanel from "../../components/SettingsPanel/SettingsPanel.jsx";
+import "./HomePage.scss"
 
 const HomePage = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSort, setSelectedSort] = useState("");
-  const LIMIT = 12;
-  const debouncedQuery = useDebounce(searchQuery);
 
   const observerTarget = useRef(null);
+  const debouncedQuery = useDebounce(searchQuery);
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    error,
-  } = useInfiniteQuery({
-    queryKey: ["products", selectedCategory, debouncedQuery, selectedSort],
-    queryFn: ({ pageParam = 1 }) => {
-      return productsAPI.getAll({
-        page: pageParam,
-        limit: LIMIT,
-        // це можна зробити rest оператором, щоб не створювати поробжній об'єкт і наповнювати його в if
-        ...(selectedCategory && { category: selectedCategory }),
-        ...(debouncedQuery && { search: debouncedQuery }),
-        ...(selectedSort && { sort: selectedSort }),
-      });
-    },
-    getNextPageParam: (lastPage) => {
-      return lastPage.pagination.hasMore
-        ? lastPage.pagination.page + 1
-        : undefined;
-    },
-    staleTime: 3 * 60 * 1000,
-    cacheTime: 10 * 60 * 1000,
-  });
-
-  const products = data?.pages.flatMap(page => page.products) ?? [];
+  const { products, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, error } = useInfiniteProducts(selectedCategory, debouncedQuery, selectedSort);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

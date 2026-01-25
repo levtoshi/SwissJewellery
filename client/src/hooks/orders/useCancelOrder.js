@@ -6,7 +6,7 @@ const useCancelOrder = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ordersAPI.cancel,
+    mutationFn: async (id) => await ordersAPI.cancel(id),
 
     onMutate: async (id) => {
       await queryClient.cancelQueries({ queryKey: ['orders'], exact: false });
@@ -30,7 +30,7 @@ const useCancelOrder = () => {
       toast.success("Order cancelled");
     },
 
-    onError: (err, context) => {
+    onError: (err, id, context) => {
       context.ordersArr.forEach(([key, data]) =>
         queryClient.setQueryData(key, data)
       );
