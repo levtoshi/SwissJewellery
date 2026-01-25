@@ -15,6 +15,9 @@ const app = express();
 // MongoDB
 connectDB();
 
+// Render Proxy
+app.set('trust proxy', 1);
+
 // CORS
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
   ? process.env.ALLOWED_ORIGINS.split(',')
