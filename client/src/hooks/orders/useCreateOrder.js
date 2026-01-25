@@ -10,7 +10,7 @@ const useCreateOrder = () => {
   const { clearCart } = useCart();
 
   return useMutation({
-    mutationFn: ordersAPI.create,
+    mutationFn: async (data) => await ordersAPI.create(data),
 
     onMutate: async (data) => {
       await queryClient.cancelQueries({ queryKey: ['orders'], exact: false });
@@ -45,7 +45,7 @@ const useCreateOrder = () => {
       navigate("/");
     },
 
-    onError: (err, context) => {
+    onError: (err, id, context) => {
       context.ordersArr.forEach(([key, data]) =>
         queryClient.setQueryData(key, data)
       );

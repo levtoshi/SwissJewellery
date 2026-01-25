@@ -1,12 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { validateProduct } from "../../../utils/validateProduct";
-import { productsAPI } from "../../../api/products";
-import { categoriesAPI } from "../../../api/categories";
 import Loader from "../../../components/Loader/Loader"
 import "./ProductForm.scss";
 import toast from "react-hot-toast";
+import useCategories from "../../../hooks/categories/useCategories";
+import useProduct from "../../../hooks/products/useProduct";
+import useCreateProduct from "../../../hooks/products/useCreateProduct";
 
 const ProductForm = () => {
     const [form, setForm] = useState(
@@ -23,22 +23,9 @@ const ProductForm = () => {
 
     const { id } = useParams();
     const navigate = useNavigate();
-    const queryClient = useQueryClient();
-    
-    const { data: categories, isLoading: isLoadingCategories, error: errorCategories } = useQuery({
-        queryKey: ['categories'],
-        queryFn: async () => await categoriesAPI.getAll(),
-        staleTime: 3 * 60 * 1000,
-        cacheTime: 10 * 60 * 1000
-    });
 
-    const { data: product, isLoading: isLoadingProduct, error: errorProduct } = useQuery({
-        queryKey: ["product", id],
-        queryFn: async () => await productsAPI.getById(id),
-        enabled: !!id,
-        staleTime: 3 * 60 * 1000,
-        cacheTime: 10 * 60 * 1000
-    });
+    const { categories, isLoading: isLoadingCategories, error: errorCategories } = useCategories();
+    const { product, isLoading: isLoadingProduct, error: errorProduct } = useProduct(id);
 
     useEffect(() => {
         if (product) {
@@ -55,75 +42,7 @@ const ProductForm = () => {
         }
     }, [product]);
 
-    const mutation = useMutation({
-        mutationFn: async (data) => (id ?
-            await productsAPI.update(id, data) :
-            await productsAPI.create(data)),
-        onMutate: async (data) => {
-            await queryClient.cancelQueries({ queryKey: ['products'] });
-            const previousProducts = queryClient.getQueryData(['products']);
-            if (id)
-            {
-                queryClient.setQueriesData({ queryKey: ['products'] }, (old) =>
-                {
-                    if (!old)
-                        return old;
-                    return {
-                        ...old,
-                        pages: old.pages.map(page => ({
-                            ...page,
-                            products: page.products.map(p => p._id === id ? { ...p, ...data } : p)
-                        }))
-                    };
-                });
-            }
-            else
-            {
-                queryClient.setQueriesData({ queryKey: ['products'] }, (old) =>
-                {
-                    if (!old || old.pages.length === 0)
-                        return old;
-                    const tempId = `temp-${Date.now()}`;
-                    return {
-                        ...old,
-                        pages: [
-                            {
-                                ...old.pages[0],
-                                products: [{ _id: tempId, ...data }, ...old.pages[0].products]
-                            },
-                            ...old.pages.slice(1)
-                        ]
-                    };
-                });
-            }
-            return { previousProducts };
-        },
-        onSuccess: (data) => {
-            if (!id)
-            {
-                queryClient.setQueriesData({ queryKey: ['products'] }, (old) =>
-                {
-                    if (!old)
-                        return old;
-                    return {
-                        ...old,
-                        pages: old.pages.map(page => ({
-                            ...page,
-                            products: page.products.map(p => p._id.startsWith('temp-') ? data : p)
-                        }))
-                    };
-                });
-            }
-            queryClient.invalidateQueries({queryKey: ["products"], exact: false});
-            queryClient.invalidateQueries({queryKey: ["product", id], exact: true});
-            toast.success(`Product ${(id) ? "updated" : "added"}`);
-            navigate("/admin/products");
-        },
-        onError: (error, context) => {
-            queryClient.setQueriesData({ queryKey: ['products'] }, context.previousProducts);
-            toast.error(error.response?.data?.message || error.response?.data?.error || error.message);
-        }
-    });
+    const mutation = useCreateProduct(id);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

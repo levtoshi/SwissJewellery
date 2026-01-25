@@ -191,10 +191,10 @@ const CheckoutPage = () => {
                                 <div key={item.id} className="summary-item">
                                     <div className="item-info">
                                         <h4>{item.name}</h4>
-                                        <span className="item-price">${item.price} x {item.quantity}</span>
+                                        <span className="item-price">${item.finalPrice} x {item.quantity}</span>
                                     </div>
                                     <div className="item-total">
-                                        ${total.toFixed(2)}
+                                        ${(item.finalPrice * item.quantity).toFixed(2)}
                                     </div>
                                 </div>
                             ))}

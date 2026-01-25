@@ -16,14 +16,19 @@ import ProductForm from '../pages/admin/ProductForm/ProductForm';
 import CategoryForm from "../pages/admin/CategoryForm/CategoryForm";
 import OrdersProfilePage from '../pages/OrdersProfilePage/OrdersProfilePage';
 import FavoritesProfilePage from "../pages/FavoritesProfilePage/FavoritesProfilePage";
+import Loader from '../components/Loader/Loader';
 
 function ProtectedRoute({ children, adminOnly = false }) {
   const { isAuthenticated, user, loading } = useAuth();
 
-  if (loading) return <div>Завантаження...</div>;
-  
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
-  
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
   if (adminOnly && user?.role !== 'admin') {
     return <Navigate to="/" replace />;
   }

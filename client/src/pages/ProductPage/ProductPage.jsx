@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { useParams, useNavigate} from "react-router-dom";
-import { useQuery } from '@tanstack/react-query';
 import { useCart } from "../../context/CartContext";
-import { productsAPI } from "../../api/products";
 import Loader from '../../components/Loader/Loader';
 import useToggleFavorite from '../../hooks/favorites/useToggleFavorite';
+import useProduct from '../../hooks/products/useProduct';
 import { ArrowLeft, Heart } from "lucide-react";
 import "./ProductPage.scss";
 
@@ -13,16 +12,8 @@ const ProductPage = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { id } = useParams();
 
-  const { data: product, isLoading, error } = useQuery({
-    queryKey: ["product", id],
-    queryFn: async () => await productsAPI.getById(id),
-    enabled: !!id,
-    staleTime: 3 * 60 * 1000,
-    cacheTime: 10 * 60 * 1000
-  });
-
+  const { product, isLoading, error } = useProduct(id);
   const { addItem } = useCart();
-
   const { isActive, toggle } = useToggleFavorite(id, product?.isFavorite);
 
   const handleAddToCart = (e) =>
