@@ -1,6 +1,6 @@
 # SwissJewellery
 
-SwissJewellery is a modern online jewelry store with Swiss-inspired design.  
+SwissJewellery is a modern online jewellery store with Swiss-inspired design.  
 The project is built as a fullstack e-commerce application with user and admin roles.
 
 🔗 Website: https://swiss-jewellery.vercel.app/
