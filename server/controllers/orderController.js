@@ -27,7 +27,7 @@ export const createOrder = async (req, res, next) => {
       if (product.stock < item.quantity) {
         return res.status(400).json({ error: `Insufficient stock for ${product.name}` });
       }
-      total += (product.price * item.quantity);
+      total += (product.price * (1 - product.discount / 100) * item.quantity);
     }
 
     const orderData = {
